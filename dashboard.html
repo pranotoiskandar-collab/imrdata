@@ -101,6 +101,12 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
   details.more.big>summary{font-size:1rem}
 .wbars{display:grid;gap:4px;margin-top:8px}.wb{display:grid;grid-template-columns:3.2em 1fr 3.5em;align-items:center;gap:8px;font-size:var(--cds-font-size-caption,13px)}.wbar{display:block;height:14px;background:var(--cds-chart-series-1,#A63D1A);border-radius:1px}.wy,.wn{font-variant-numeric:tabular-nums;color:var(--cds-color-text-secondary,inherit)}.wb .wbar{max-width:100%}
 .wbl .wb{grid-template-columns:7.5em 1fr 4em}
+.ij .tabs{display:flex;flex-wrap:wrap;gap:6px;position:sticky;top:0;z-index:5;background:var(--color-bg,var(--bg,#F4F1EA));padding:8px 0;border-bottom:1px solid var(--color-border-line)}
+.ij .tab{font:inherit;font-size:var(--cds-font-size-caption,13px);padding:6px 12px;border:1px solid var(--color-border-line);border-radius:999px;background:transparent;color:var(--color-fg);cursor:pointer}
+.ij .tab[aria-selected="true"]{background:var(--cds-chart-series-1,#A63D1A);border-color:var(--cds-chart-series-1,#A63D1A);color:#fff}
+.ij .panel{display:flex;flex-direction:column;gap:var(--cds-gap-xl);min-width:0}
+.ij.tabs-on .panel:not(.on){display:none}
+.ij .nexttab{align-self:flex-start;font:inherit;font-size:var(--cds-font-size-caption,13px);background:none;border:none;color:var(--cds-chart-series-1,#A63D1A);cursor:pointer;padding:0;text-decoration:underline}
 </style>
 
 <div class="ij">
@@ -112,6 +118,8 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
     <p class="muted">Data snapshot: Scopus and SCImago data retrieved 15 November 2026. IJICL, which hosts this page, is one of the 87 journals in the list; it is not among the journals analyzed because it is outside the open-access scope.</p>
   </header>
 
+  <nav class="tabs" role="tablist" aria-label="Parts of the dashboard"><button type="button" role="tab" class="tab" id="tab-overview" data-tab="overview" aria-controls="panel-overview">Overview</button><button type="button" role="tab" class="tab" id="tab-citations" data-tab="citations" aria-controls="panel-citations">Who cites whom</button><button type="button" role="tab" class="tab" id="tab-inside" data-tab="inside" aria-controls="panel-inside">Inside the journals</button><button type="button" role="tab" class="tab" id="tab-beyond" data-tab="beyond" aria-controls="panel-beyond">Beyond Scopus</button><button type="button" role="tab" class="tab" id="tab-method" data-tab="method" aria-controls="panel-method">Method and data</button></nav>
+  <div class="panel" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview" data-panel="overview">
   <section id="about" class="plain">
     <h2>About this page</h2>
     <dl class="words">
@@ -214,7 +222,8 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
         <details class="more"><summary>How to read this</summary><dl class="guide"><dt>Answers</dt><dd>How many of the listed journals sit in each SCImago tier?</dd><dt>How to read</dt><dd>Bar length is the number of journals. Q1 is the top quarter of all Scopus law journals worldwide, Q4 the bottom quarter.</dd></dl></details>
     <div class="chart" data-draw="quartileChart" data-source="quartile_counts"></div>
   </section>
-
+  </div>
+  <div class="panel" id="panel-citations" role="tabpanel" aria-labelledby="tab-citations" data-panel="citations">
   <section id="venues">
     <h2>Where the citations come from</h2>
     <p class="muted">Share of all citing rows, by the venue that cites. Hover a bar for the count.</p>
@@ -315,7 +324,8 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
     <details class="more"><summary>How to read this</summary><dl class="guide"><dt>Answers</dt><dd>Over the last few years, has more of the citing come from outside Indonesia?</dd><dt>How to read</dt><dd>The year is the end of each Scopus CiteScore window. The gray line uses every journal with data that year, so early years rest on few journals (the number is under each point). The colored line follows the same 43 journals across 2023–2025, so the change is not caused by new journals joining.</dd></dl></details>
     <div class="chart" data-draw="trendChart" data-source="trend"></div>
   </section>
-
+  </div>
+  <div class="panel" id="panel-inside" role="tabpanel" aria-labelledby="tab-inside" data-panel="inside">
   <section id="boards">
     <h2>Shared editors and citations</h2>
     <p class="say2" data-draw="sayBoards" data-source="boards">—</p>
@@ -344,7 +354,17 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
     <div class="chart" data-draw="templateChart" data-source="template"></div>
   </section>
 
-
+  <section id="fees">
+    <h2>Who pays to publish: author fees</h2>
+    <p class="say2">Most of the journals are free to read online, and most charge the author. Of the 87, 51 state an article processing charge, payable on acceptance; 23 charge nothing to authors or readers; for 13 we found no clear statement. The median fee is Rp 5 million (about USD 300); the highest are USD 1,000–1,500. Applied to the 1,973 documents the journals published in 2025, the fees add up to roughly Rp 7–9 billion (USD 450,000–570,000) a year. Three journals take about a quarter of that. Ministries and universities, in turn, pay authors for each Scopus article, up to Rp 40 million from the Ministry of Religious Affairs, often more than the fee itself. A plausible reading, not tested here, is that public money pays for much of this market.</p>
+    <details class="more"><summary>How to read this</summary><dl class="guide"><dt>Answers</dt><dd>How many of the journals charge authors, how much, and roughly what the fees add up to?</dd><dt>How to read</dt><dd>The first bars count journals by what they charge. The second compare two estimates of the fees paid in 2025: the low one uses each journal's domestic rate and counts the 13 unknown journals as free; the high one uses the foreign-author rate where there is one and gives the unknown journals the median fee.</dd><dt>Keep in mind</dt><dd>Fees were read on each journal's own site on 15 November 2026 (DOAJ where the site could not be reached). Waivers, unpaid items such as editorials, and paid extras such as proofreading or translation are not modelled. Rp 16,300 = USD 1. The award figures come from published regulations and university decrees; how many authors receive them is not known.</dd></dl></details>
+    <h3 class="muted" style="margin:0;font-size:var(--cds-font-size-caption)">Journals by author fee</h3>
+<div class="wbars wbl"><div class="wb"><span class="wy">Charge a fee</span><span class="wbar" style="width:100.0%"></span><span class="wn">51</span></div><div class="wb"><span class="wy">No fee</span><span class="wbar" style="width:45.1%"></span><span class="wn">23</span></div><div class="wb"><span class="wy">Not found</span><span class="wbar" style="width:25.5%"></span><span class="wn">13</span></div></div>
+    <h3 class="muted" style="margin:12px 0 0;font-size:var(--cds-font-size-caption)">Fees paid in 2025, estimate (Rp billion)</h3>
+<div class="wbars wbl"><div class="wb"><span class="wy">Low</span><span class="wbar" style="width:78.5%"></span><span class="wn">7.3</span></div><div class="wb"><span class="wy">High</span><span class="wbar" style="width:100.0%"></span><span class="wn">9.3</span></div></div>
+  </section>
+  </div>
+  <div class="panel" id="panel-beyond" role="tabpanel" aria-labelledby="tab-beyond" data-panel="beyond">
   <section id="wos">
     <h2>A second index for comparison: Web of Science</h2>
     <p class="say2">Web of Science barely sees these journals. Of the 87 journals in SCImago's Law list, only 2 are in the Web of Science Core Collection, both in its Emerging Sources Citation Index: Jurnal Ilmiah Peuradeun (468 records) and Indonesia Law Review (291). Indonesia is nonetheless entering this index too. Law publications with an author in Indonesia rose from 88 in 2022 to 201 in 2025, and 2026 has already passed that (202), above the earlier peak of 2018 (190). Two thirds of the 1,733 such publications are in the Emerging Sources index; 153 are in the Social Sciences Citation Index.</p>
@@ -376,17 +396,8 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
     <h3 class="muted" style="margin:12px 0 0;font-size:var(--cds-font-size-caption)">Web of Science documents citing the seven journals, by country</h3>
     <div class="wbars wbl"><div class="wb"><span class="wy">Indonesia</span><span class="wbar" style="width:100.0%"></span><span class="wn">352</span></div><div class="wb"><span class="wy">Malaysia</span><span class="wbar" style="width:32.4%"></span><span class="wn">114</span></div><div class="wb"><span class="wy">Türkiye</span><span class="wbar" style="width:5.1%"></span><span class="wn">18</span></div><div class="wb"><span class="wy">Pakistan</span><span class="wbar" style="width:4.3%"></span><span class="wn">15</span></div><div class="wb"><span class="wy">USA</span><span class="wbar" style="width:4.0%"></span><span class="wn">14</span></div><div class="wb"><span class="wy">Saudi Arabia</span><span class="wbar" style="width:3.7%"></span><span class="wn">13</span></div><div class="wb"><span class="wy">Australia</span><span class="wbar" style="width:3.1%"></span><span class="wn">11</span></div><div class="wb"><span class="wy">China</span><span class="wbar" style="width:3.1%"></span><span class="wn">11</span></div></div>
   </section>
-
-  <section id="fees">
-    <h2>Who pays to publish: author fees</h2>
-    <p class="say2">Most of the journals are free to read online, and most charge the author. Of the 87, 51 state an article processing charge, payable on acceptance; 23 charge nothing to authors or readers; for 13 we found no clear statement. The median fee is Rp 5 million (about USD 300); the highest are USD 1,000–1,500. Applied to the 1,973 documents the journals published in 2025, the fees add up to roughly Rp 7–9 billion (USD 450,000–570,000) a year. Three journals take about a quarter of that. Ministries and universities, in turn, pay authors for each Scopus article, up to Rp 40 million from the Ministry of Religious Affairs, often more than the fee itself. A plausible reading, not tested here, is that public money pays for much of this market.</p>
-    <details class="more"><summary>How to read this</summary><dl class="guide"><dt>Answers</dt><dd>How many of the journals charge authors, how much, and roughly what the fees add up to?</dd><dt>How to read</dt><dd>The first bars count journals by what they charge. The second compare two estimates of the fees paid in 2025: the low one uses each journal's domestic rate and counts the 13 unknown journals as free; the high one uses the foreign-author rate where there is one and gives the unknown journals the median fee.</dd><dt>Keep in mind</dt><dd>Fees were read on each journal's own site on 15 November 2026 (DOAJ where the site could not be reached). Waivers, unpaid items such as editorials, and paid extras such as proofreading or translation are not modelled. Rp 16,300 = USD 1. The award figures come from published regulations and university decrees; how many authors receive them is not known.</dd></dl></details>
-    <h3 class="muted" style="margin:0;font-size:var(--cds-font-size-caption)">Journals by author fee</h3>
-<div class="wbars wbl"><div class="wb"><span class="wy">Charge a fee</span><span class="wbar" style="width:100.0%"></span><span class="wn">51</span></div><div class="wb"><span class="wy">No fee</span><span class="wbar" style="width:45.1%"></span><span class="wn">23</span></div><div class="wb"><span class="wy">Not found</span><span class="wbar" style="width:25.5%"></span><span class="wn">13</span></div></div>
-    <h3 class="muted" style="margin:12px 0 0;font-size:var(--cds-font-size-caption)">Fees paid in 2025, estimate (Rp billion)</h3>
-<div class="wbars wbl"><div class="wb"><span class="wy">Low</span><span class="wbar" style="width:78.5%"></span><span class="wn">7.3</span></div><div class="wb"><span class="wy">High</span><span class="wbar" style="width:100.0%"></span><span class="wn">9.3</span></div></div>
-  </section>
-
+  </div>
+  <div class="panel" id="panel-method" role="tabpanel" aria-labelledby="tab-method" data-panel="method">
   <section id="method">
     <h2>Method and data</h2>
     <p class="say2">The page reads citations as a surface: a record of who mentions whom, taken as it stands. It counts that surface in two directions, compares it with other journals and countries, and leaves the reasons behind it open.</p>
@@ -462,6 +473,8 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
     <p class="muted">Limits: Juris has no export and IJICL is outside the open-access scope, so 85 of 87 journals are analyzed; Mawaddah appears in the venue figures only. Outgoing references cover 2022–2025, while incoming citations use each journal's CiteScore window, so the two sides cover similar but not identical years. About a quarter of references are laws, web pages or incomplete entries that cannot be placed. The data show patterns of citation, not the reasons for them.</p>
     </details>
   </section>
+  </div>
+
 
   <script>
     const num = (v) => (v === null || v === '' || v === 'n/a' ? null : +v);
@@ -923,6 +936,22 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
       const lg = d3.select(el).append('div').attr('class', 'legend'); [['Indonesian', dash.colors[0]], ['English', dash.colors[1]], ['Other or unclear', 'var(--cds-chart-muted)']].forEach(([n, c]) => lg.append('span').style('--sw', c).text(n));
     }));
   </script>
+<script>
+(function(){
+  var root=document.querySelector('.ij'), ids=['overview','citations','inside','beyond','method'];
+  var sec2tab={}; ids.forEach(function(t){document.querySelectorAll('#panel-'+t+' section[id]').forEach(function(x){sec2tab[x.id]=t;});});
+  ids.forEach(function(t,i){ if(i<ids.length-1){ var p=document.getElementById('panel-'+t), b=document.createElement('button'); b.type='button'; b.className='nexttab'; b.textContent='Next: '+document.getElementById('tab-'+ids[i+1]).textContent+' \u2192'; b.onclick=function(){show(ids[i+1],true);}; p.appendChild(b);} });
+  function show(t,scroll){ ids.forEach(function(x){ var on=x===t; document.getElementById('panel-'+x).classList.toggle('on',on); var b=document.getElementById('tab-'+x); b.setAttribute('aria-selected',on?'true':'false'); b.tabIndex=on?0:-1;});
+    root.classList.add('tabs-on'); try{window.dispatchEvent(new Event('resize'));}catch(e){}
+    if(scroll){ try{document.querySelector('.ij .tabs').scrollIntoView({block:'start'});}catch(e){} } }
+  document.querySelectorAll('.ij .tab').forEach(function(b){ b.addEventListener('click',function(){show(b.dataset.tab,true);}); });
+  document.querySelector('.ij .tabs').addEventListener('keydown',function(e){ var i=ids.indexOf(document.activeElement.dataset.tab); if(i<0)return; if(e.key==='ArrowRight'||e.key==='ArrowLeft'){ var j=(i+(e.key==='ArrowRight'?1:ids.length-1))%ids.length; show(ids[j]); document.getElementById('tab-'+ids[j]).focus(); e.preventDefault(); } });
+  document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.closest('a[href^="#"]'); if(!a)return; var id=a.getAttribute('href').slice(1); var t=ids.indexOf(id)>=0?id:sec2tab[id]; if(t){ show(t); } });
+  function start(){ var h=(location.hash||'').slice(1); var t=ids.indexOf(h)>=0?h:(sec2tab[h]||'overview'); show(t); if(sec2tab[h]){ try{document.getElementById(h).scrollIntoView();}catch(e){} } }
+  /* draw every chart at full width first, then fold into tabs */
+  if(document.readyState==='complete') setTimeout(start,1500); else window.addEventListener('load',function(){setTimeout(start,1500);});
+})();
+</script>
 
 <script>window.__ijDrawAll();var __ijw=0;window.addEventListener('resize',function(){clearTimeout(__ijw);__ijw=setTimeout(window.__ijDrawAll,250)});</script>
 </div>
