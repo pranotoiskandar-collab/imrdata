@@ -1,0 +1,8 @@
+query,date,measure,value,note
+"IS=(ISSNs of the 87 journals), Core Collection all editions",2026-11-15,records,759,"Jurnal Ilmiah Peuradeun 468; Indonesia Law Review 291; all ESCI"
+same,2026-11-15,citing articles,831,"536 without self-citations; times cited 1,115 (570 without self); h-index 8"
+same (citing articles),2026-11-15,citing by index,"ESCI 639; SSCI 129; SCIE 56; BKCI-SSH 16; CPCI-SSH 10; AHCI 9; CPCI-S 8; BKCI-S 2","a record can be in more than one index"
+same (citing articles),2026-11-15,citing by country,"Indonesia 521; Malaysia 112; China 42; Australia 36; USA 29; England 28",
+"CU=(Indonesia) AND WC=(Law)",2026-11-15,records,1733,"by year: 2017 144, 2018 190, 2019 133, 2020 117, 2021 104, 2022 88, 2023 101, 2024 142, 2025 201, 2026 202 (partial)"
+same,2026-11-15,by index,"ESCI 1162; CPCI-SSH 264; BKCI-SSH 154; SSCI 153; CPCI-S 9; SCIE 8; BKCI-S 2; AHCI 1",
+"Cited Work = Samarah* OR El-Usrah* OR El-Mashlahah* OR Al-Manahij* OR Ijtihad J* OR Ijtihad: J* OR Al-Ihkam* OR Volksgeist*; cited years 2018-2026",2026-11-15,citing documents,538,"623 cited references matched; one stray match (Al-Ihkam f usul al-ahkam); citing countries Indonesia 352, Malaysia 114; top citing source Peuradeun 116"

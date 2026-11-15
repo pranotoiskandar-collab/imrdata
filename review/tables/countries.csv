@@ -1,0 +1,73 @@
+country,code,journals,q1,q2,q3,q4,asia
+Pakistan,PK,2,0,0,0,2,1
+Bangladesh,BD,1,0,0,0,1,1
+Sri Lanka,LK,1,0,0,0,1,1
+Nepal,NP,0,0,0,0,0,1
+Nigeria,NG,1,0,0,1,0,0
+Kenya,KE,0,0,0,0,0,0
+Ghana,GH,0,0,0,0,0,0
+Ethiopia,ET,1,0,0,1,0,0
+Egypt,EG,0,0,0,0,0,0
+Morocco,MA,0,0,0,0,0,0
+Tunisia,TN,0,0,0,0,0,0
+Colombia,CO,17,2,4,6,5,0
+Ukraine,UA,17,0,8,5,3,0
+Australia,AU,19,2,4,7,6,0
+France,FR,7,0,0,1,6,0
+New Zealand,NZ,2,0,0,0,2,0
+Belgium,BE,2,0,0,0,2,0
+Sweden,SE,1,0,1,0,0,0
+Denmark,DK,0,0,0,0,0,0
+Greece,GR,0,0,0,0,0,0
+Malaysia,MY,4,0,2,1,1,1
+India,IN,8,0,0,3,5,1
+China,CN,3,0,0,2,1,1
+Singapore,SG,2,0,0,0,2,1
+Brazil,BR,37,2,5,16,14,0
+Türkiye,TR,1,0,0,0,1,1
+Saudi Arabia,SA,1,0,0,1,0,1
+United Arab Emirates,AE,0,0,0,0,0,1
+Jordan,JO,0,0,0,0,0,1
+Iraq,IQ,0,0,0,0,0,1
+Iran,IR,2,0,1,0,1,1
+Qatar,QA,1,0,0,1,0,1
+Kuwait,KW,0,0,0,0,0,1
+Oman,OM,0,0,0,0,0,1
+Algeria,DZ,0,0,0,0,0,0
+Kazakhstan,KZ,0,0,0,0,0,1
+Uzbekistan,UZ,0,0,0,0,0,1
+Azerbaijan,AZ,1,0,0,0,1,1
+Georgia,GE,0,0,0,0,0,1
+Armenia,AM,0,0,0,0,0,1
+Vietnam,VN,0,0,0,0,0,1
+Philippines,PH,1,0,0,0,1,1
+Thailand,TH,1,0,1,0,0,1
+South Korea,KR,1,0,0,0,1,1
+Japan,JP,0,0,0,0,0,1
+Taiwan,TW,3,0,1,1,1,1
+Hong Kong,HK,2,0,1,1,0,1
+Argentina,AR,4,1,0,2,1,0
+Chile,CL,16,2,9,4,1,0
+Peru,PE,3,0,1,1,1,0
+Mexico,MX,10,0,2,3,5,0
+Russia,RU,11,0,1,10,0,0
+South Africa,ZA,8,0,2,4,2,0
+Romania,RO,3,0,1,1,1,0
+Serbia,RS,4,0,0,2,2,0
+Croatia,HR,7,0,2,4,1,0
+Slovenia,SI,4,0,1,1,2,0
+Czech Republic,CZ,12,0,1,4,6,0
+Slovakia,SK,3,0,0,3,0,0
+Hungary,HU,5,0,3,2,0,0
+Bulgaria,BG,0,0,0,0,0,0
+Lithuania,LT,1,0,0,0,1,0
+Latvia,LV,1,0,0,1,0,0
+Estonia,EE,1,0,0,0,1,0
+Poland,PL,28,0,7,10,11,0
+Spain,ES,64,7,18,26,13,0
+Italy,IT,42,2,6,11,23,0
+Germany,DE,57,6,14,18,19,0
+Netherlands,NL,94,30,31,25,8,0
+Canada,CA,14,0,4,3,5,0
+United States,US,181,81,43,27,29,0
+Indonesia,ID,87,22,28,27,10,1
