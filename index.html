@@ -326,6 +326,55 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
     <div class="rd-scroll"><svg id="rd-rush" viewBox="0 0 1000 330" role="img" aria-label="Journals entering Scopus by year, with policy pins"></svg></div>
   </section>
 
+  <section id="compare">
+    <h2>Indonesia beside other countries</h2>
+    <p>Set beside other countries and other journals, the Indonesian journals stand out: there are many more of them, they are cited mostly from home and from themselves, their articles have more authors, and their editorial boards draw on fewer countries and institutions.</p>
+    <p class="muted">Pick a question; the chart redraws. Indonesian figures are in rust. Each comparison is set out in full, with sources and caveats, in the sections linked below the chart.</p>
+    <style>
+      .ij .cmp-btns{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 16px}
+      .ij .cmp-btns button{font:600 14px/1.2 var(--font-anthropic-sans,system-ui,sans-serif);padding:8px 12px;border:1px solid var(--color-border-line,#D6D0C4);background:transparent;color:var(--color-fg);border-radius:999px;cursor:pointer}
+      .ij .cmp-btns button[aria-pressed=true]{background:var(--color-fg);color:var(--color-bg,#F4F1EA);border-color:var(--color-fg)}
+      .ij #cmp-svg{display:block;width:100%;height:auto;overflow:visible}
+      .ij #cmp-svg text{fill:var(--color-fg);font-family:var(--font-anthropic-sans,system-ui,sans-serif)}
+      .ij #cmp-note{font-size:15px;color:var(--color-fg-muted);margin-top:8px}
+    </style>
+    <div class="cmp-btns" role="group" aria-label="Question"></div>
+    <svg id="cmp-svg" role="img" aria-label="Bar chart comparing the Indonesian journals with journals and countries elsewhere"></svg>
+    <p id="cmp-note"></p>
+    <p class="muted">Sources and caveats: <a href="#why">Why Indonesia, and not others?</a> and <a href="#world">the world's law journals</a> (journal counts; SCImago files a journal under its publisher's country, and the United Kingdom is not yet counted); <a href="#peers">Asian journals at Western presses</a> (Web of Science, citing items 2022–2025; Indonesian figures are the three journals checked there); <a href="#authors">Many hands</a> (authors per article); <a href="#boards">Shared editors and citations</a> (Indonesian boards, October 2026, 67 journals with five or more members). University-press boards: ten journals' board pages, read 15 November 2026.</p>
+    <script>
+    (function(){const NS='http://www.w3.org/2000/svg';
+    const E=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p&&p.appendChild(e);return e};
+    const Q=[
+ {k:'Law journals in Scopus',u:'',max:90,note:'Law journals in SCImago 2025, by publisher country. Indonesia has more than twice as many as the next country here.',
+  rows:[['Indonesia',87,1],['Brazil',37],['Colombia',17],['Ukraine',17],['India',8],['Malaysia',4],['China',3],['Pakistan',2]]},
+ {k:'Citations from home',u:'%',max:100,dec:1,note:'Share of citing documents (Web of Science, 2022–2025) with an author in the journal\'s home country.',
+  rows:[['Samarah (ID)',73.4,1],['Jurnal Ilmiah Peuradeun (ID)',66.3,1],['J. Indonesian Legal Studies (ID)',61.1,1],['Asia Pacific Law Review (HK)',43.3],['Chinese J. Comparative Law',40.0],['Chinese J. International Law',23.0],['Jindal Global Law Review (IN)',19.6],['Asian J. Comparative Law (SG)',6.8]]},
+ {k:'Citing itself',u:'%',max:60,dec:1,note:'Share of citing documents published in the cited journal itself (Web of Science, 2022–2025). Only journals Web of Science indexes can be shown.',
+  rows:[['Jurnal Ilmiah Peuradeun (ID)',48.5,1],['Asia Pacific Law Review (HK)',6.7],['Chinese J. International Law',4.0],['Chinese J. Comparative Law',2.8],['Asian J. Comparative Law (SG)',1.5,0,'under 1.5%']]},
+ {k:'Authors per article',u:'',max:3.5,dec:1,note:'Mean authors per article (five or more counted as five). Established = eight leading law journals; newcomers joined Scopus recently.',
+  rows:[['87 Indonesian journals',3.1,1],['4 Malaysian newcomers',2.6],['3 Ukrainian newcomers',1.6],['8 established journals',1.3]]},
+ {k:'Board from one country',u:'%',max:100,dec:0,note:'Editorial boards: median share of members from the country most represented. For 66 of the 67 Indonesian boards that country is Indonesia.',
+  rows:[['67 Indonesian journals',59,1],['10 university-press journals',35],['Cambridge Law Journal',100],['American J. International Law',74],['I-CON',26],['Asian J. Comparative Law',26]]},
+ {k:'Countries on the board',u:'',max:25,dec:0,note:'Editorial boards: median number of countries represented.',
+  rows:[['67 Indonesian journals',7,1],['10 university-press journals',15],['I-CON',22],['German Law Journal',20],['Asian J. Comparative Law',16],['Cambridge Law Journal',1]]},
+ {k:'Board from one institution',u:'%',max:100,dec:0,note:'Editorial boards: median share of members from the single most represented institution.',
+  rows:[['67 Indonesian journals',33,1],['10 university-press journals',15],['Cambridge Law Journal',100],['Oxford J. Legal Studies',65],['I-CON',8],['German Law Journal',5]]}
+];
+    const fmt=(v,q,r)=>r&&r[3]?r[3]:(q.dec?v.toFixed(q.dec):v)+(q.u);
+    const s=document.getElementById('cmp-svg'),bt=document.querySelector('#compare .cmp-btns'),n=document.getElementById('cmp-note');let cur=0;
+    const draw=()=>{const q=Q[cur],W=s.clientWidth||600;if(!W)return;const nar=W<520,rh=nar?44:30,lab=nar?0:240,H=q.rows.length*rh+6;
+     s.setAttribute('viewBox',`0 0 ${W} ${H}`);s.replaceChildren();
+     q.rows.forEach((r,i)=>{const y=i*rh;const bw=Math.max(2,(W-lab-60)*r[1]/q.max);
+      E('text',{x:nar?0:lab-10,y:y+(nar?13:rh/2+5),'text-anchor':nar?'start':'end',style:'font-size:15px;font-weight:'+(r[2]?600:400)},s).textContent=r[0];
+      const by=nar?y+20:y+6;E('rect',{x:lab,y:by,height:nar?16:rh-12,width:bw,rx:1.5,fill:r[2]?'#A63D1A':'var(--cds-chart-muted,#B5AE9F)'},s);
+      E('text',{x:lab+bw+6,y:by+(nar?13:(rh-12)/2+5),style:'font-size:15px;font-weight:600'},s).textContent=fmt(r[1],q,r);});
+     n.textContent=q.note;};
+    Q.forEach((q,i)=>{const b=document.createElement('button');b.type='button';b.textContent=q.k;b.setAttribute('aria-pressed',i===0);b.onclick=()=>{cur=i;bt.querySelectorAll('button').forEach((x,j)=>x.setAttribute('aria-pressed',j===i));draw()};bt.appendChild(b)});
+    draw();let t=0;addEventListener('resize',()=>{clearTimeout(t);t=setTimeout(draw,150)});})();
+    </script>
+  </section>
+
   <section id="why">
     <h2>Why Indonesia, and not others?</h2>
     <p class="say2">Many countries pay or promote scholars for indexed publications, yet few have produced law journals of their own in Scopus. Indonesia appears to combine two things the others mostly do not. Its rules reward a Scopus article at any quartile, so a new journal counts from its first indexed issue, and ministries and universities pay journals to get into Scopus. Only 9 of the 87 journals were in Scopus before 2019; 56 entered in 2019–2021, one to two years after lecturers' allowances were tied to publishing (2017–2018). Where rules reward only Web of Science or high impact (China until 2020, Türkiye), or where a national list gives domestic law journals career value without Scopus (China's Chinese-language list, India, Iran), few law journals entered Scopus. Where Scopus status sets a journal's national rank (Ukraine, Colombia, Brazil), many did. These are readings of timing and rules, not proof of cause.</p>
