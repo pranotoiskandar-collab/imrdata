@@ -546,6 +546,7 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
     <h2>Method and data</h2>
     <p class="say2">The page reads citations as a surface: a record of who mentions whom, taken as it stands. It counts that surface in two directions, compares it with other journals and countries, and leaves the reasons behind it open.</p>
     <details class="more"><summary>The data</summary><dl class="guide">
+      <dt>Last updated</dt><dd>15 November 2026.</dd>
       <dt>Availability</dt><dd>The underlying Scopus and Web of Science records are licensed and are not publicly available. This page shows aggregate figures only. Readers with access can check the figures themselves in <a href="https://www.scopus.com">Scopus</a> and <a href="https://www.webofscience.com">Web of Science</a>.</dd>
       <dt>The journals</dt><dd>The 87 Indonesian journals in SCImago's 2025 Law list (subject category 3308), with their quartiles. 85 are analyzed in full: one has no Scopus export and one is outside the open-access scope.</dd>
       <dt>Incoming citations</dt><dd>Scopus's "citing documents" export for each journal, covering its latest CiteScore window: 21,972 citing rows in all. Each row is one document that cites the journal, with its source title, year and DOI.</dd>
@@ -1307,7 +1308,7 @@ body{background:#FAF8F3}
   const hdr=ij.querySelector('header');hdr.after(n);
   const pr=n.querySelector('.lr-prog');
   addEventListener('scroll',()=>{const h=document.documentElement;pr.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';let cur=null;panels.forEach(p=>{if(p.getBoundingClientRect().top<120)cur=p.dataset.panel});n.querySelectorAll('a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')=='#part-'+cur))},{passive:true});
-  let h1=hdr.querySelector('h1');if(!h1){h1=document.createElement('h1');h1.textContent='One-way dialogue in global legal scholarship, seen from Indonesia';hdr.querySelector('.rd-kick')?hdr.querySelector('.rd-kick').after(h1):hdr.append(h1)}if(h1){const w=document.createElement('div');w.className='lr-head';h1.before(w);const k=hdr.querySelector('.rd-kick');if(k)w.append(k);w.append(h1);const by=document.createElement('div');by.className='lr-by';by.innerHTML='Scopus, Web of Science and SCImago data retrieved 15 November 2026 · Underlying records are licensed and not publicly available; readers with access can check them in <a href="https://www.scopus.com">Scopus</a> and <a href="https://www.webofscience.com">Web of Science</a>';w.append(by)}
+  let h1=hdr.querySelector('h1');if(!h1){h1=document.createElement('h1');h1.textContent='One-way dialogue in global legal scholarship, seen from Indonesia';hdr.querySelector('.rd-kick')?hdr.querySelector('.rd-kick').after(h1):hdr.append(h1)}if(h1){const w=document.createElement('div');w.className='lr-head';h1.before(w);const k=hdr.querySelector('.rd-kick');if(k)w.append(k);w.append(h1);const by=document.createElement('div');by.className='lr-by';by.innerHTML='Last updated 15 November 2026 · Scopus, Web of Science and SCImago data retrieved 15 November 2026 · Underlying records are licensed and not publicly available; readers with access can check them in <a href="https://www.scopus.com">Scopus</a> and <a href="https://www.webofscience.com">Web of Science</a>';w.append(by)}
  }
 
  const OPEN=['flow','about','start'];
