@@ -101,6 +101,10 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
 .ij .pj-trk span{position:absolute;top:50%;transform:translateY(-50%);font-size:11px;color:var(--color-fg-muted);z-index:1;white-space:nowrap}
 .ij .pj-gap{grid-column:1/-1;height:6px}
 @media (max-width:560px){.ij .pj-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.ij .pj-lab{grid-column:1/-1;margin-top:6px}.ij .pj-hd.l{display:none}}
+.ij .ap-stats{display:flex;flex-wrap:wrap;gap:24px;margin:14px 0 20px}.ij .ap-stats b{display:block;font-size:2.2em;line-height:1;font-weight:600}.ij .ap-stats span{color:var(--color-fg-muted);font-size:var(--cds-font-size-caption)}.ij .ap-id{color:#A63D1A}.ij .ap-est{color:#1F4E79}
+.ij .ap-row{display:grid;grid-template-columns:minmax(0,12em) minmax(0,1fr) 3em;gap:10px;align-items:center;margin:8px 0;max-width:920px}.ij .ap-lab{font-size:var(--cds-font-size-caption);line-height:1.2}.ij .ap-lab small{display:block;color:var(--color-fg-muted)}.ij .ap-bar{display:flex;height:24px;border-radius:2px;overflow:hidden}.ij .ap-bar i{display:block;height:100%}.ij .ap-mean{font-weight:600;text-align:right}
+.ij .ap-leg{display:flex;flex-wrap:wrap;gap:14px;font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin:6px 0 12px}.ij .ap-leg i{display:inline-block;width:11px;height:11px;margin-right:5px;vertical-align:-1px}
+@media (max-width:520px){.ij .ap-row{grid-template-columns:minmax(0,1fr) 3em}.ij .ap-lab{grid-column:1/-1}}
 .ij .say2 { max-width: 70ch; line-height: 1.5; }
 [data-dash-source-state=refreshing] { opacity: .5; }
 
@@ -498,6 +502,14 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
     <div class="rd-legend"><span><i style="background:var(--rd-out)"></i>English</span><span><i style="background:var(--rd-gs)"></i>Indonesian</span><span><i style="background:var(--rd-faint)"></i>Other or unknown</span></div>
   </section>
 
+  <section id="authors">
+    <h2>Many hands: authors per article</h2>
+    <p class="say2">An article in the 87 Indonesian journals has, on average, three authors. In established law journals the norm is one. Journals that joined Scopus recently elsewhere sit in between.</p>
+    <div class="ap-stats"><div><b class="ap-id">3.1</b><span>authors per article, 87 Indonesian journals</span></div><div><b class="ap-est">1.3</b><span>authors per article, eight established journals</span></div><div><b>17% / 77%</b><span>single-author articles, Indonesia / established</span></div></div>
+    <div class="ap-leg" id="ap-leg"></div>
+    <div id="ap-rows"></div>
+    <p class="muted">Share of articles by number of authors; the figure on the right is the mean, counting five or more as five. Indonesia: Scopus export, articles and reviews 2022–2025 (6,976). Established: I-CON, American Journal of Comparative Law, Modern Law Review, Oxford Journal of Legal Studies, Law &amp; Society Review, Asian Journal of Comparative Law, Asian Journal of Law and Society, Asian Journal of International Law, 2022–2025 (1,491). Newcomers: IIUM Law Journal, Malaysian Journal of Syariah and Law, UUM Journal of Legal Studies, Journal of Shariah Law Research; Lex Portus, Access to Justice in Eastern Europe, Kyiv-Mohyla Law and Politics Journal, 2019–2025 (1,187). Comparison sets from Crossref; book reviews and editorials removed by title, so counts are approximate.</p>
+  </section>
   <section id="template">
     <h2>Do the articles follow a template?</h2>
     <p class="say2" data-draw="sayTemplate" data-source="template">—</p>
@@ -1256,6 +1268,7 @@ const T=(S,x,y,t,o)=>{const e=el('text',Object.assign({x,y},o||{}),S);e.textCont
  T(S,490,412,'heights to scale',{'text-anchor':'end'});})();
 })();
 </script><script>(function(){var g=document.getElementById('pj-grid');if(!g)return;var S=[["Chinese Journal of International Law","OUP · 1,686",16.2,10.4,1],["Asian Journal of Comparative Law","CUP · 847",7.3,10.3,1],["Asia Pacific Law Review","Routledge · 745",6.8,10.1,1],["Chinese Journal of Comparative Law","OUP · 498",22.7,10.8,1],["Jindal Global Law Review","Springer · 384",24.2,7.8,1],["Asia-Pacific J. on Human Rights and the Law","Brill · 273",2.9,10.3,1],0,["Samarah","1,640",91.1,43.5,2],["Jurnal Ilmiah Peuradeun","1,187",83.2,45.5,2],["Journal of Indonesian Legal Studies","891",90.9,38.8,2],["Hasanuddin Law Review","663",73.8,29.1,2],["Indonesian Journal of International Law","587",61.8,19.6,2],["Lex Scientia Law Review","541",86.7,31.8,2],0,["IJICL","IMR Press · 173",11.6,62.4,3]];var C={1:"var(--cds-chart-series-1, #2a6fdb)",2:"var(--cds-chart-series-2, #d9822b)",3:"var(--cds-chart-muted, #8C8470)"};function d(v,c){var p=v>60?'right:'+(100-v)+'%;padding-right:9px':'left:'+v+'%;padding-left:9px';return '<div class="pj-trk"><b style="left:'+v+'%;background:'+c+'"></b><span style="'+p+'">'+v+'%</span></div>'}g.innerHTML='<div class="pj-hd l"></div><div class="pj-hd">Home-country authors</div><div class="pj-hd">Top-10 citing venues</div>'+S.map(function(r){return r?'<div class="pj-lab">'+r[0]+'<small>'+r[1]+' citing docs</small></div>'+d(r[2],C[r[4]])+d(r[3],C[r[4]]):'<div class="pj-gap"></div>'}).join('')})();</script>
+<script>(function(){var R=document.getElementById('ap-rows');if(!R)return;var K=["#1F4E79","#5F84A8","#B9AE94","#C97A5C","#A63D1A"],L=["1 author","2","3","4","5 or more"],G=[["87 Indonesian journals","2022–2025",[1153,1316,1604,1220,1683]],["Malaysian newcomers","4 journals, 2019–2025",[174,183,227,95,60]],["Ukrainian newcomers","3 journals, 2019–2025",[247,138,43,20,0]],["Established journals","8 journals, 2022–2025",[1148,243,70,17,13]]];document.getElementById('ap-leg').innerHTML=L.map(function(l,i){return '<span><i style="background:'+K[i]+'"></i>'+l+'</span>'}).join('');R.innerHTML=G.map(function(g){var v=g[2],t=v.reduce(function(a,b){return a+b},0),m=v.reduce(function(a,c,i){return a+c*(i+1)},0)/t;return '<div class="ap-row"><div class="ap-lab">'+g[0]+'<small>'+g[1]+' · '+t.toLocaleString('en')+' articles</small></div><div class="ap-bar" role="img" aria-label="'+g[0]+': '+v.map(function(c,i){return L[i]+' '+Math.round(c/t*100)+'%'}).join(', ')+'">'+v.map(function(c,i){return '<i title="'+L[i]+': '+Math.round(c/t*100)+'%" style="width:'+(c/t*100)+'%;background:'+K[i]+'"></i>'}).join('')+'</div><div class="ap-mean">'+m.toFixed(1)+'</div></div>'}).join('')})();</script>
 
 
 <script>window.__ijDrawAll();var __ijw=0;window.addEventListener('resize',function(){clearTimeout(__ijw);__ijw=setTimeout(window.__ijDrawAll,250)});</script>
