@@ -90,6 +90,17 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
 .ij .welcome { border-left: 3px solid var(--cds-chart-muted); padding: 4px 0 4px var(--cds-pad-lg); display: flex; flex-direction: column; gap: 4px; }
 .ij .welcome p:first-child { font-family: var(--font-anthropic-serif); font-size: 1.1rem; line-height: 1.55; }
 .ij .cmp { border-collapse: collapse; font-size: var(--cds-font-size-caption); }
+.ij .pj-leg{display:flex;flex-wrap:wrap;gap:14px;font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);margin:8px 0}
+.ij .pj-leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.ij .pj-grid{display:grid;grid-template-columns:minmax(0,14em) minmax(0,1fr) minmax(0,1fr);gap:4px 14px;align-items:center;max-width:920px}
+.ij .pj-hd{font-size:var(--cds-font-size-caption);color:var(--color-fg-muted);border-bottom:1px solid var(--cds-chart-grid, #ccc);padding-bottom:3px}
+.ij .pj-lab{font-size:var(--cds-font-size-caption);line-height:1.2}.ij .pj-lab small{display:block;color:var(--color-fg-muted)}
+.ij .pj-trk{position:relative;height:22px;border-left:1px solid var(--cds-chart-grid, #ccc)}
+.ij .pj-trk::after{content:"";position:absolute;left:0;right:0;top:50%;border-top:1px dotted var(--cds-chart-grid, #ccc)}
+.ij .pj-trk b{position:absolute;top:50%;width:10px;height:10px;border-radius:50%;transform:translate(-50%,-50%);z-index:1}
+.ij .pj-trk span{position:absolute;top:50%;transform:translateY(-50%);font-size:11px;color:var(--color-fg-muted);z-index:1;white-space:nowrap}
+.ij .pj-gap{grid-column:1/-1;height:6px}
+@media (max-width:560px){.ij .pj-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.ij .pj-lab{grid-column:1/-1;margin-top:6px}.ij .pj-hd.l{display:none}}
 .ij .say2 { max-width: 70ch; line-height: 1.5; }
 [data-dash-source-state=refreshing] { opacity: .5; }
 
@@ -378,6 +389,29 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
     </div>
   </section>
 
+  <section id="peers">
+    <h2>A different pattern: Asian journals at Western presses</h2>
+    <p class="say2">Journals edited in China, Hong Kong, Singapore and India but published by Oxford, Cambridge, Routledge, Brill, Springer and Sage are cited from many countries and many venues. The Indonesian journals are cited mostly from Indonesia, and by a small group of venues.</p>
+    <p class="muted">Scopus documents published 2022–2025 that cite each journal. Left: share with at least one author in the journal's home country (Hong Kong for Asia Pacific Law Review and the Asia-Pacific Journal on Human Rights and the Law, Singapore for the Asian Journal of Comparative Law). Right: share published in the ten venues that cite the journal most often, the journal itself included.</p>
+    <details class="more"><summary>How to read this</summary><dl class="guide"><dt>Answers</dt><dd>Is the inward citation pattern of the listed journals simply what any journal from an Asian country looks like?</dd><dt>How to read</dt><dd>A dot far to the right on the left scale means most citing authors come from the journal's own country; on the right scale it means a few venues supply most of the citations.</dd><dt>Caveats</dt><dd>Counts are documents, not citations, and titles are matched by string, so figures are approximate. Chapters of one book that repeat the same reference list each count as a citing document, which can inflate the figure for any journal; see the IJICL note below. The Chinese Journal of Transnational Law (Sage, launched 2024) has only 9 citing documents and is left out.</dd></dl></details>
+    <div class="pj-leg"><span><i style="background:var(--cds-chart-series-1, #2a6fdb)"></i>Asian-titled, Western press</span><span><i style="background:var(--cds-chart-series-2, #d9822b)"></i>Indonesian</span><span><i style="background:var(--cds-chart-muted, #8C8470)"></i>IJICL</span></div>
+    <div class="pj-grid" id="pj-grid"></div>
+    <h3>Web of Science check</h3>
+    <div class="tablewrap"><table class="wtab"><thead><tr><th>Journal</th><th>Citing items 2022–2025</th><th>In the journal itself</th><th>Home-country authors</th></tr></thead><tbody>
+      <tr><td>Chinese Journal of International Law</td><td>808</td><td>4.0%</td><td>China 23.0%</td></tr>
+      <tr><td>Asia Pacific Law Review</td><td>721</td><td>6.7%</td><td>China, incl. Hong Kong, 43.3%</td></tr>
+      <tr><td>Asian Journal of Comparative Law</td><td>557</td><td>under 1.5%</td><td>Singapore 6.8%</td></tr>
+      <tr><td>Chinese Journal of Comparative Law</td><td>432</td><td>2.8%</td><td>China 40.0%</td></tr>
+      <tr><td>Jindal Global Law Review</td><td>276</td><td>not indexed</td><td>India 19.6%</td></tr>
+      <tr><td>Jurnal Ilmiah Peuradeun</td><td>412</td><td>48.5%</td><td>Indonesia 66.3%</td></tr>
+      <tr><td>Samarah</td><td>169</td><td>not indexed</td><td>Indonesia 73.4%</td></tr>
+      <tr><td>Journal of Indonesian Legal Studies</td><td>95</td><td>not indexed</td><td>Indonesia 61.1%</td></tr>
+      <tr><td>IJICL</td><td>33</td><td>not indexed</td><td>Indonesia 3.0%</td></tr>
+    </tbody></table></div>
+    <p class="muted">Web of Science Core Collection, Cited Reference Search; citing items published 2022–2025; country = any author address. "Not indexed": the journal itself is not in the Core Collection, so it cannot appear as a citing venue. Web of Science counts Hong Kong addresses under China. Of the 169 items citing Samarah, 55 are in Jurnal Ilmiah Peuradeun.</p>
+    <h3>IJICL</h3>
+    <p class="say2">IJICL was cited by 173 Scopus documents in 2022–2025, and 93 of them are chapters of a single book, <i>The Ethics of Bribery</i>, vol. 2 (Springer, 2025). The book's last part is a series of three-page chapters, "How Serious Is Bribery? A Case Study of …", one for each of more than 90 countries, all by Robert W. McGee. The chapters repeat a short reference list, and one item on it is McGee, Gelman and Tarangelo, "How Serious Is Tax Evasion? An Empirical Legal Answer," published in IJICL's first issue (2014). One citation is thus counted once per country. Without that book IJICL is cited about 80 times in four years. Web of Science does not index the book and finds 33 citing items from 25 countries.</p>
+  </section>
   <section id="net">
     <h2>Net receivers and net givers inside the list</h2>
     <p class="muted">Each bar is one journal: citations it receives from the other listed journals minus citations it gives to them. Above the line = net receiver; below = net giver. Hover for the details.</p>
@@ -1221,7 +1255,8 @@ const T=(S,x,y,t,o)=>{const e=el('text',Object.assign({x,y},o||{}),S);e.textCont
  T(S,cx+5,wl-ha-10,'538',{'text-anchor':'middle',class:'ink','font-size':16});T(S,cx,wl+hTot*.5,'6,036 in all',{'text-anchor':'middle',class:'ink','font-size':16});
  T(S,490,412,'heights to scale',{'text-anchor':'end'});})();
 })();
-</script>
+</script><script>(function(){var g=document.getElementById('pj-grid');if(!g)return;var S=[["Chinese Journal of International Law","OUP · 1,686",16.2,10.4,1],["Asian Journal of Comparative Law","CUP · 847",7.3,10.3,1],["Asia Pacific Law Review","Routledge · 745",6.8,10.1,1],["Chinese Journal of Comparative Law","OUP · 498",22.7,10.8,1],["Jindal Global Law Review","Springer · 384",24.2,7.8,1],["Asia-Pacific J. on Human Rights and the Law","Brill · 273",2.9,10.3,1],0,["Samarah","1,640",91.1,43.5,2],["Jurnal Ilmiah Peuradeun","1,187",83.2,45.5,2],["Journal of Indonesian Legal Studies","891",90.9,38.8,2],["Hasanuddin Law Review","663",73.8,29.1,2],["Indonesian Journal of International Law","587",61.8,19.6,2],["Lex Scientia Law Review","541",86.7,31.8,2],0,["IJICL","IMR Press · 173",11.6,62.4,3]];var C={1:"var(--cds-chart-series-1, #2a6fdb)",2:"var(--cds-chart-series-2, #d9822b)",3:"var(--cds-chart-muted, #8C8470)"};function d(v,c){var p=v>60?'right:'+(100-v)+'%;padding-right:9px':'left:'+v+'%;padding-left:9px';return '<div class="pj-trk"><b style="left:'+v+'%;background:'+c+'"></b><span style="'+p+'">'+v+'%</span></div>'}g.innerHTML='<div class="pj-hd l"></div><div class="pj-hd">Home-country authors</div><div class="pj-hd">Top-10 citing venues</div>'+S.map(function(r){return r?'<div class="pj-lab">'+r[0]+'<small>'+r[1]+' citing docs</small></div>'+d(r[2],C[r[4]])+d(r[3],C[r[4]]):'<div class="pj-gap"></div>'}).join('')})();</script>
+
 
 <script>window.__ijDrawAll();var __ijw=0;window.addEventListener('resize',function(){clearTimeout(__ijw);__ijw=setTimeout(window.__ijDrawAll,250)});</script>
 </div>
