@@ -846,15 +846,15 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
 
 
     function pairBars(el, rows, aria) {
-      const W = el.clientWidth || 600; const rowH = 34; const labW = Math.min(250, W * 0.42);
+      const W = el.clientWidth || 600; const nar = W < 500; const top0 = nar ? 20 : 0; const rowH = 38 + top0; const labW = nar ? 0 : Math.min(250, W * 0.42);
       const H = rows.length * rowH + 8;
       el.replaceChildren();
       const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', aria);
       const x = d3.scaleLinear().domain([0, d3.max(rows, (d) => Math.max(d.outS, d.inS)) || 1]).range([labW, W - 60]);
       const tip = window.ijTip(el);
       const g = svg.selectAll('g.r').data(rows).join('g').attr('transform', (d, i) => `translate(0,${i * rowH})`);
-      g.append('text').attr('class', 'lbl').attr('x', labW - 8).attr('y', rowH / 2).attr('dy', '0.35em').attr('text-anchor', 'end').text((d) => d.label);
-      [['outS', 'out', 0, 3], ['inS', 'in', 1, 17]].forEach(([k, n, ci, y0]) => {
+      g.append('text').attr('class', 'lbl').attr('x', nar ? 0 : labW - 8).attr('y', nar ? 12 : (rowH / 2)).attr('dy', '0.35em').attr('text-anchor', nar ? 'start' : 'end').text((d) => d.label);
+      [['outS', 'out', 0, 3 + top0], ['inS', 'in', 1, 20 + top0]].forEach(([k, n, ci, y0]) => {
         g.append('rect').attr('x', labW).attr('y', y0).attr('height', 12).attr('rx', 2).attr('width', (d) => Math.max(1, x(d[k]) - labW)).style('fill', dash.colors[ci])
           .on('pointermove', (ev, d) => tip.show(ev, [[d.label], [ci ? 'Cites the listed journals' : 'The listed journals cite', d3.format(',')(d[n]) + ' (' + d[k].toFixed(1) + '%)'], ['Not matched to Scopus, ' + (ci ? 'incoming' : 'outgoing'), d3.format(',')(ci ? d.nmIn : d.nmOut)]])).on('pointerleave', () => tip.hide());
         g.append('text').attr('x', (d) => x(d[k]) + 5).attr('y', y0 + 6).attr('dy', '0.35em').text((d) => d[k] < 0.1 && d[k] > 0 ? '<0.1%' : d[k].toFixed(1) + '%');
@@ -901,7 +901,7 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
 
     dash.draw('scatterChart', (el) => {
       const rows = window.ijRows(); const s = dash.data('balance'); if (!rows) return window.ijFail(el, s);
-      const W = el.clientWidth || 600; const H = Math.min(460, Math.max(280, W * 0.6)); const m = { l: 48, r: 12, t: 12, b: 40 };
+      const W = el.clientWidth || 600; const H = Math.min(460, Math.max(280, W * 0.6)); const m = { l: 58, r: 12, t: 12, b: 48 };
       el.replaceChildren();
       const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Scatter plot of citations given against citations received within the list, one dot per journal');
       const mx = d3.max(rows, (d) => Math.max(d.given, d.received)) || 1;
@@ -967,17 +967,17 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
       const nodes = D.nodes.filter((d) => (st.out || d.kind !== 'outside') && (st.conn || d.kind !== 'connector')).map((d) => ({ ...d }));
       const size = (d) => d.kind === 'outside' ? d.given : d.kind === 'connector' ? d.given + d.received : (d.inScope ? d.received : d.given);
       const W = el.clientWidth || 640; const H = Math.max(380, Math.min(680, W * 0.8));
-      const r = d3.scaleSqrt().domain([0, d3.max(nodes, size) || 1]).range([2.5, 18]);
+      const r = d3.scaleSqrt().domain([0, d3.max(nodes, size) || 1]).range([2, W < 500 ? 11 : 18]);
       const wd = d3.scaleSqrt().domain([st.min, d3.max(links, (l) => l.total) || st.min + 1]).range([0.6, 6]);
       let seed = 7; const lcg = () => ((seed = (1664525 * seed + 1013904223) % 4294967296) / 4294967296);
       const sim = d3.forceSimulation(nodes)
         .force('link', d3.forceLink(links).id((d) => d.id).distance((l) => 45 + 220 / Math.sqrt(l.total)).strength((l) => Math.min(0.7, 0.05 + l.total / 400)))
-        .force('charge', d3.forceManyBody().strength(-220))
+        .force('charge', d3.forceManyBody().strength(-90).distanceMax(220))
         .force('collide', d3.forceCollide((d) => r(size(d)) + 2))
-        .force('x', d3.forceX(W / 2).strength(0.05)).force('y', d3.forceY(H / 2).strength(0.07)).stop();
+        .force('x', d3.forceX(W / 2).strength(0.14)).force('y', d3.forceY(H / 2).strength(0.14)).stop();
       if (typeof sim.randomSource === 'function') sim.randomSource(lcg);
       for (let i = 0; i < 320; i++) sim.tick();
-      nodes.forEach((d) => { const rr = r(size(d)) + 2; const px = Math.min(70, W * 0.12); d.x = Math.max(px, Math.min(W - px, d.x)); d.y = Math.max(rr + 26, Math.min(H - rr, d.y)); });
+      { const rm = r.range()[1] + 4; const x0 = rm + 4, x1 = W - rm - 4, y0 = 66, y1 = H - rm; const ex = d3.extent(nodes, (d) => d.x), ey = d3.extent(nodes, (d) => d.y); const sx = (x1 - x0) / ((ex[1] - ex[0]) || 1), sy = (y1 - y0) / ((ey[1] - ey[0]) || 1); nodes.forEach((d) => { d.x = x0 + (d.x - ex[0]) * sx; d.y = y0 + (d.y - ey[0]) * sy; }); }
       el.replaceChildren();
       const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Network diagram of citations among Indonesian law journals and outside venue groups');
       const tip = window.ijTip(el);
@@ -998,14 +998,14 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
       g.filter((d) => d.kind === 'connector').append('path').attr('class', 'node').attr('d', (d) => d3.symbol(d3.symbolDiamond, Math.PI * r(size(d)) ** 2 * 1.2)()).style('fill', col);
       g.filter((d) => d.kind === 'journal').append('circle').attr('class', 'node').attr('r', (d) => r(size(d))).style('fill', col);
       g.filter((d) => d.kind === 'outside').append('rect').attr('class', 'node').attr('x', (d) => -r(size(d))).attr('y', (d) => -r(size(d))).attr('width', (d) => 2 * r(size(d))).attr('height', (d) => 2 * r(size(d))).attr('rx', 2).style('fill', col);
-      const top = new Set(nodes.filter((d) => d.kind === 'journal').sort((a, b) => size(b) - size(a)).slice(0, W < 500 ? 5 : 9).map((d) => d.id));
-      nodes.filter((d) => d.kind === 'connector').sort((a, b) => size(b) - size(a)).slice(0, W < 500 ? 2 : 4).forEach((d) => top.add(d.id));
+      const top = new Set(nodes.filter((d) => d.kind === 'journal').sort((a, b) => size(b) - size(a)).slice(0, W < 500 ? 4 : 9).map((d) => d.id));
+      nodes.filter((d) => d.kind === 'connector').sort((a, b) => size(b) - size(a)).slice(0, W < 500 ? 0 : 4).forEach((d) => top.add(d.id));
       const short = (s2) => { const t = s2.split(':')[0]; return t.length > 24 ? t.slice(0, 22) + '…' : t; };
       const placed = [];
       g.filter((d) => d.kind === 'outside' || top.has(d.id) || d.id === st.sel).sort((a, b) => (b.id === st.sel) - (a.id === st.sel) || size(b) - size(a)).each(function (d) {
         const t = d3.select(this).append('text').attr('class', 'lbl halo').attr('y', -r(size(d)) - 4).attr('text-anchor', 'middle').style('pointer-events', 'none').text(short(d.id));
         const w = this.querySelector('text').getComputedTextLength ? t.node().getComputedTextLength() : 60;
-        const box = { x0: d.x - w / 2 - 2, x1: d.x + w / 2 + 2, y0: d.y - r(size(d)) - 18, y1: d.y - r(size(d)) - 2 };
+        const dx = Math.max(w / 2 + 2 - d.x, Math.min(0, W - w / 2 - 2 - d.x)); if (dx) t.attr('x', dx); const box = { x0: d.x + dx - w / 2 - 2, x1: d.x + dx + w / 2 + 2, y0: d.y - r(size(d)) - 18, y1: d.y - r(size(d)) - 2 };
         if (placed.some((p) => box.x0 < p.x1 && box.x1 > p.x0 && box.y0 < p.y1 && box.y1 > p.y0)) t.remove(); else placed.push(box);
       });
       const lay = svg.append('g'); g.selectAll('text.lbl').each(function (d) { this.setAttribute('transform', `translate(${d.x},${d.y})`); lay.node().appendChild(this); });
@@ -1106,7 +1106,7 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
       svg.append('path').datum(d.filter((r) => r.same !== null)).attr('d', line('same')).attr('fill', 'none').attr('stroke', dash.colors[0]).attr('stroke-width', 2.5);
       svg.selectAll('circle.a').data(d).join('circle').attr('cx', (r) => x(r.year)).attr('cy', (r) => y(r.all)).attr('r', 4).style('fill', 'var(--cds-chart-muted)').on('pointermove', (ev, r) => tip.show(ev, [[String(r.year)], ['All journals with data', r.all + '%'], ['Journals', r.n]])).on('pointerleave', () => tip.hide());
       svg.selectAll('circle.s').data(d.filter((r) => r.same !== null)).join('circle').attr('cx', (r) => x(r.year)).attr('cy', (r) => y(r.same)).attr('r', 4.5).style('fill', dash.colors[0]).on('pointermove', (ev, r) => tip.show(ev, [[String(r.year)], ['Same 43 journals', r.same + '%']])).on('pointerleave', () => tip.hide());
-      svg.selectAll('text.n').data(d).join('text').attr('x', (r) => x(r.year)).attr('y', H - m.b + 30).attr('text-anchor', 'middle').text((r) => r.n + ' journals');
+      svg.selectAll('text.n').data(d).join('text').attr('x', (r) => x(r.year)).attr('y', H - m.b + 30).attr('text-anchor', 'middle').text((r) => (W < 520 ? 'n=' : '') + r.n + (W < 520 ? '' : ' journals'));
       const lg = d3.select(el).append('div').attr('class', 'legend'); lg.append('span').style('--sw', dash.colors[0]).text('Same 43 journals'); lg.append('span').style('--sw', 'var(--cds-chart-muted)').text('All journals with data that year');
     }));
     dash.draw('sayBoards', (el) => guard('boards', el, (d) => { const g = (k) => d.find((r) => r.shared === k); const n = g('none'), t = g('3+'); el.textContent = `Pairs of journals with no shared board members exchange ${n.avg_per_pair} citations on average. Pairs sharing three or more members exchange ${t.avg_per_pair}, about ${Math.round(t.avg_per_pair / n.avg_per_pair)} times as many. Those ${t.pairs} pairs are ${t.pct_of_pairs}% of all pairs but carry ${t.pct_of_citations}% of the citations between the journals.`; }));
@@ -1263,8 +1263,8 @@ const T=(S,x,y,t,o)=>{const e=el('text',Object.assign({x,y},o||{}),S);e.textCont
  el('path',{d:'M'+top.map(([x,y])=>`${cx+x},${wl+y}`).join(' L')+'Z',fill:'var(--rd-ice)',stroke:'var(--rd-back)','stroke-width':1.5},S);
  for(let i=0;i<6;i++)el('path',{d:`M${20+i*85},${wl+3} q10,-5 20,0 t20,0`,fill:'none',stroke:'var(--rd-back)','stroke-width':1,opacity:.5},S);
  el('line',{x1:0,x2:500,y1:wl,y2:wl,stroke:'var(--rd-back)','stroke-width':1.5},S);
- T(S,10,wl-10,'what Web of Science sees',{class:'ink'});T(S,10,wl+22,'what Scopus records',{class:'ink'});
- T(S,cx+5,wl-ha-10,'538',{'text-anchor':'middle',class:'ink','font-size':16});T(S,cx,wl+hTot*.5,'6,036 in all',{'text-anchor':'middle',class:'ink','font-size':16});
+ T(S,10,wl-ha-12,'what Web of Science sees',{class:'ink'});T(S,10,wl+22,'what Scopus records',{class:'ink'});
+ T(S,cx+102,wl-8,'538',{'text-anchor':'start',class:'ink','font-size':16});T(S,cx,wl+hTot*.5,'6,036 in all',{'text-anchor':'middle',class:'ink','font-size':16});
  T(S,490,412,'heights to scale',{'text-anchor':'end'});})();
 })();
 </script><script>(function(){var g=document.getElementById('pj-grid');if(!g)return;var S=[["Chinese Journal of International Law","OUP · 1,686",16.2,10.4,1],["Asian Journal of Comparative Law","CUP · 847",7.3,10.3,1],["Asia Pacific Law Review","Routledge · 745",6.8,10.1,1],["Chinese Journal of Comparative Law","OUP · 498",22.7,10.8,1],["Jindal Global Law Review","Springer · 384",24.2,7.8,1],["Asia-Pacific J. on Human Rights and the Law","Brill · 273",2.9,10.3,1],0,["Samarah","1,640",91.1,43.5,2],["Jurnal Ilmiah Peuradeun","1,187",83.2,45.5,2],["Journal of Indonesian Legal Studies","891",90.9,38.8,2],["Hasanuddin Law Review","663",73.8,29.1,2],["Indonesian Journal of International Law","587",61.8,19.6,2],["Lex Scientia Law Review","541",86.7,31.8,2],0,["IJICL","IMR Press · 173",11.6,62.4,3]];var C={1:"var(--cds-chart-series-1, #2a6fdb)",2:"var(--cds-chart-series-2, #d9822b)",3:"var(--cds-chart-muted, #8C8470)"};function d(v,c){var p=v>60?'right:'+(100-v)+'%;padding-right:9px':'left:'+v+'%;padding-left:9px';return '<div class="pj-trk"><b style="left:'+v+'%;background:'+c+'"></b><span style="'+p+'">'+v+'%</span></div>'}g.innerHTML='<div class="pj-hd l"></div><div class="pj-hd">Home-country authors</div><div class="pj-hd">Top-10 citing venues</div>'+S.map(function(r){return r?'<div class="pj-lab">'+r[0]+'<small>'+r[1]+' citing docs</small></div>'+d(r[2],C[r[4]])+d(r[3],C[r[4]]):'<div class="pj-gap"></div>'}).join('')})();</script>
