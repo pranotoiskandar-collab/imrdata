@@ -158,7 +158,7 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
 @keyframes rdrun{to{stroke-dashoffset:-16}}
 @media (prefers-reduced-motion:reduce){.rd .dash{animation:none}}
 .rd .node{fill:var(--rd-bg);stroke:var(--rd-ink);stroke-width:1.2}
-.rd .nlab{font-size:15px;font-weight:600;fill:var(--rd-ink)}
+.rd .nlab{font-size:15px;font-weight:600;fill:var(--rd-ink)}#rd-flow-svg{display:block;overflow:hidden}@media (max-width:640px){.rd .nlab,.rd .nnum,#rd-flow-svg .nnum{font-size:24px!important}}
 .rd .nnum{font-size:15px;font-weight:700}
 .rd .halo{fill:rgba(166,61,26,.1);stroke:var(--rd-out);stroke-width:1;stroke-dasharray:3 3}
 .rd .hit{fill:none;stroke:transparent;cursor:pointer}
@@ -1225,13 +1225,13 @@ const T=(S,x,y,t,o)=>{const e=el('text',Object.assign({x,y},o||{}),S);e.textCont
  out:{lede:'Indonesia’s 87 Scopus law journals cite Western publishers tens of thousands of times. Those publishers’ books and journals cite them back a few hundred times.',
   flows:[{f:'indo',t:'comm',n:37885,c:'out',bend:.3,lab:'37,885',lx:40,ly:-30,txt:'references in the 87 journals to books and journals of Elsevier, Springer, Wiley, Taylor & Francis, SAGE, Emerald, Brill and De Gruyter (2022–2025)'},
    {f:'comm',t:'indo',n:527,c:'back',bend:.12,lab:'527 back',lx:30,ly:14,txt:'documents from those commercial publishers citing the 87 journals (each journal’s CiteScore window)'},
-   {f:'indo',t:'univ',n:6868,c:'out',bend:.36,lab:'6,868',ly:-10,txt:'references to Western university presses: Oxford, Cambridge, Chicago, Johns Hopkins, Duke, Edinburgh, Toronto, MIT and similar'},
+   {f:'indo',t:'univ',n:6868,c:'out',bend:.36,lab:'6,868',ly:-10,plx:-120,ply:34,txt:'references to Western university presses: Oxford, Cambridge, Chicago, Johns Hopkins, Duke, Edinburgh, Toronto, MIT and similar'},
    {f:'univ',t:'indo',n:13,c:'back',bend:.2,lab:'13 back',ly:16,txt:'documents from those university presses citing the 87 journals'}],
   nodes:[['comm','Major commercial publishers',-12,-40],['univ','Western university presses',16]],
   stats:[['o','44,753','references going out to Western publishers'],['b','540','citations coming back from them'],['','83 : 1','out for every one back']],
   note:'Arrows run from the citing work to the cited one; width is proportional to the count. Publisher groups are placed in their home region (Europe, the UK and North America), not at a single address. Sources: Scopus reference lists of the 7,046 documents the journals published in 2022–2025, and Scopus “citing documents” exports, matched to the Scopus source list by title.'},
  in:{lede:'Of 21,972 documents that cite the 87 journals, about 85% come from Indonesian venues. The rest trickle in from Malaysia, Brazil, Pakistan and Northern conference series and book publishers.',
-  flows:[{f:'north',t:'indo',n:1361,c:'back',bend:-.18,lab:'1,361',lx:-60,ly:-14,txt:'citing documents in Northern journals, books, conference series and high-volume open-access venues'},
+  flows:[{f:'north',t:'indo',n:1361,c:'back',bend:-.18,lab:'1,361',lx:-60,ly:-14,dlx:-115,dly:-2,txt:'citing documents in Northern journals, books, conference series and high-volume open-access venues'},
    {f:'malaysia',t:'indo',n:245,c:'gs',bend:-.5,txt:'citing documents in Malaysian venues'},
    {f:'brazil',t:'indo',n:168,c:'gs',bend:-.22,lab:'168',ly:-6,txt:'citing documents in Brazilian venues'},
    {f:'pakistan',t:'indo',n:124,c:'gs',bend:-.22,txt:'citing documents in Pakistani venues'},
@@ -1255,16 +1255,17 @@ const T=(S,x,y,t,o)=>{const e=el('text',Object.assign({x,y},o||{}),S);e.textCont
    el('path',{d,class:'flow '+f.c,'stroke-width':w},gF);
    if(w>3)el('path',{d,class:'dash','stroke-width':Math.min(w*.35,4)},gF);
    else el('path',{d,class:'dash','stroke-width':Math.max(w,1.4),style:'stroke:var(--rd-'+f.c+');stroke-dasharray:3 9;opacity:1'},gF);
-   if(f.lab)T(gN,C.mx+(f.lx||0),C.my+(f.ly||0),f.lab,{class:'nnum','text-anchor':'middle',style:'fill:var(--rd-'+f.c+')'});
+   if(f.lab)T(gN,C.mx+(innerWidth<640?(f.plx!=null?f.plx:(f.lx||0)):(f.dlx!=null?f.dlx:(f.lx||0))),C.my+(innerWidth<640?(f.ply!=null?f.ply:(f.ly||0)):(f.dly!=null?f.dly:(f.ly||0))),f.lab,{class:'nnum','text-anchor':'middle',style:'fill:var(--rd-'+f.c+')'});
    const h=el('path',{d,class:'hit','stroke-width':Math.max(w,14)},gF);
    h.addEventListener('pointermove',e=>showTip(e,`<b>${fmt(f.n)}</b> ${f.txt}`));h.addEventListener('pointerleave',hideTip)});
-  M.nodes.forEach(([k,l,dy,dx])=>{const[x,y]=P[k];el('circle',{cx:x,cy:y,r:4,class:'node'},gN);T(gN,x+(dx||0),y+(dy||-10),l,{class:'nlab','text-anchor':'middle'})});
-  T(gN,P.indo[0]+8,P.indo[1]+38,'87 Indonesian law journals',{class:'nlab','text-anchor':'middle'});}
+  const nar=innerWidth<640,SH={'Major commercial publishers':'Commercial','Western university presses':'University presses','Northern venues':'North','Other Lat. Am.':'Lat. Am.'},NP={univ:[34,0],comm:[-16,0],north:[-14,-24],eeur:[-14,30],pakistan:[-14,20],latam:[-14,6],iran:null};
+  M.nodes.forEach(([k,l,dy,dx])=>{const[x,y]=P[k];el('circle',{cx:x,cy:y,r:nar?6:4,class:'node'},gN);if(nar&&k in NP){if(!NP[k])return;dy=NP[k][0];dx=NP[k][1]}T(gN,x+(dx||0),y+(dy||-10),nar?(SH[l]||l):l,{class:'nlab','text-anchor':'middle'})});
+  T(gN,P.indo[0]+(nar?-10:8),P.indo[1]+(nar?52:38),nar?'87 journals':'87 Indonesian law journals',{class:'nlab','text-anchor':'middle'});}
  const bO=$('rd-bOut'),bI=$('rd-bIn');
  bO.onclick=()=>{bO.setAttribute('aria-pressed','true');bI.setAttribute('aria-pressed','false');draw('out')};
  bI.onclick=()=>{bI.setAttribute('aria-pressed','true');bO.setAttribute('aria-pressed','false');draw('in')};
- draw('out');
- const vb=()=>S.setAttribute('viewBox',innerWidth<640?'200 60 720 400':'0 0 1000 470');vb();addEventListener('resize',vb);
+ let cur='out';const d0=draw;draw=m=>{cur=m;d0(m)};draw('out');
+ const vb=()=>S.setAttribute('viewBox',innerWidth<640?'200 60 700 400':'0 0 1000 470');vb();let rt=0;addEventListener('resize',()=>{vb();clearTimeout(rt);rt=setTimeout(()=>draw(cur),150)});
 })();
 // ---------- units
 (function(){const E=$('rd-units');if(!E)return;
