@@ -561,6 +561,48 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
     <div id="ap-rows"></div>
     <p class="muted">Share of articles by number of authors; the figure on the right is the mean, counting five or more as five. Indonesia: Scopus export, articles and reviews 2022–2025 (6,976). Established: I-CON, American Journal of Comparative Law, Modern Law Review, Oxford Journal of Legal Studies, Law &amp; Society Review, Asian Journal of Comparative Law, Asian Journal of Law and Society, Asian Journal of International Law, 2022–2025 (1,491). Newcomers: IIUM Law Journal, Malaysian Journal of Syariah and Law, UUM Journal of Legal Studies, Journal of Shariah Law Research; Lex Portus, Access to Justice in Eastern Europe, Kyiv-Mohyla Law and Politics Journal, 2019–2025 (1,187). Comparison sets from Crossref; book reviews and editorials removed by title, so counts are approximate.</p>
   </section>
+  <section id="credit">
+    <h2>One citation, several authors</h2>
+    <p class="say2">Each author of a paper can list its citations in full. Articles the 87 journals published in 2022–2025 had received 34,927 citations in Scopus. Credited in full to every author, as profile pages and many rankings count them, the same citations add up to 122,310, about 3.5 times as many. In established law journals, where most articles have one author, the multiplier is about 1.3.</p>
+    <div class="ap-stats"><div><b>34,927</b><span>citations to 6,976 articles</span></div><div><b class="ap-id">122,310</b><span>the same, credited to every author</span></div><div><b class="ap-id">3.5×</b><span>multiplier (about 1.3× in established journals)</span></div></div>
+    <p class="muted" style="margin-top:18px">Mean citations per article, and the same split equally among its authors, by number of authors.</p>
+    <svg id="cr-c1" viewBox="0 0 700 340" role="img" aria-label="Citations per article rise with the number of authors, while citations per author fall" style="display:block;width:100%;height:auto;overflow:visible"></svg>
+    <p class="muted" style="margin:4px 0 0"><span style="display:inline-block;width:12px;height:12px;background:#A63D1A;vertical-align:-1px;margin-right:6px"></span>Per article (each author's full credit) &nbsp; <span style="display:inline-block;width:12px;height:12px;background:#C9A27A;vertical-align:-1px;margin-right:6px"></span>Per author, split</p>
+    <p class="muted" style="margin-top:22px">Mean authors per article and the share of single-author articles, by year of publication. The multiplier rose from 2.9 in 2022 to 4.1 in 2025.</p>
+    <svg id="cr-c2" viewBox="0 0 700 310" role="img" aria-label="Mean authors per article rose from 2.48 in 2022 to 3.76 in 2025" style="display:block;width:100%;height:auto;overflow:visible"></svg>
+    <details class="more"><summary>How this is computed</summary><dl class="guide">
+      <dt>Data</dt><dd>Scopus export of the Articles and Reviews the 87 journals published in 2022–2025 (6,976 with named authors), with Scopus's "Cited by" count at the time of export.</dd>
+      <dt>Full and split credit</dt><dd>Full credit counts each citation once for every author. Split credit divides it by the number of authors, as in <a href="#ref-beatty2022">Beatty 2022</a>, who found that splitting moved the ranks of 28 U.S. law faculties by only about one place on average. The multiplier is full credit divided by split credit.</dd>
+      <dt>Caveats</dt><dd>"Cited by" includes self-citations, and recent articles have had less time to be cited. For the eight established comparison journals there are author counts but no citation counts, so their multiplier is approximated by their mean of 1.33 authors per article.</dd>
+    </dl></details>
+    <script>
+(function(){
+var NS='http://www.w3.org/2000/svg';
+function el(t,a,p){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e}
+var K=(document.getElementById('cr-c1')||{}).clientWidth<520?1.8:1;
+function tx(p,x,y,s,o){var t=el('text',Object.assign({x:x,y:y,fill:'#0e0d0c'},o||{}),p);t.textContent=s;t.setAttribute('style','font-size:'+Math.round(((o&&o['font-size'])||15)*K)+'px');return t}
+var d=[['1 author',3.44,3.44,1153],['2',4.24,2.12,1316],['3',4.77,1.59,1604],['4',5.58,1.40,1220],['5 or more',6.48,1.30,1683]];
+var s=document.getElementById('cr-c1');if(!s)return;var L=44,R=690,T=16,B=246,max=7,y=function(v){return B-(B-T)*v/max};
+for(var g=0;g<=7;g++){el('line',{x1:L,x2:R,y1:y(g),y2:y(g),stroke:'#D6D0C4','stroke-width':1},s);tx(s,L-8,y(g)+5,g,{'text-anchor':'end',fill:'#3d3935'})}
+var bw=(R-L)/d.length;
+d.forEach(function(r,i){var x0=L+i*bw+bw*0.14,w=bw*0.34;
+ el('rect',{x:x0,y:y(r[1]),width:w,height:B-y(r[1]),fill:'#A63D1A'},s);tx(s,x0+w/2,y(r[1])-6,r[1].toFixed(1),{'text-anchor':'middle','font-weight':600});
+ if(i>0){el('rect',{x:x0+w+4,y:y(r[2]),width:w,height:B-y(r[2]),fill:'#C9A27A'},s);tx(s,x0+w*1.5+4,y(r[2])-6,r[2].toFixed(1),{'text-anchor':'middle'})}
+ tx(s,L+i*bw+bw/2,B+22*K,(K>1&&i==4)?'5+':r[0],{'text-anchor':'middle'});tx(s,L+i*bw+bw/2,B+46*K,'n='+r[3].toLocaleString('en-US'),{'text-anchor':'middle','font-size':13,fill:'#3d3935'});
+});
+var e=[[2022,2.48,29],[2023,2.96,19],[2024,3.35,13],[2025,3.76,9]];
+var s2=document.getElementById('cr-c2'),L2=44,R2=660,T2=24,B2=200,mx=4,y2=function(v){return B2-(B2-T2)*v/mx};
+for(var h=0;h<=4;h++){el('line',{x1:L2,x2:R2,y1:y2(h),y2:y2(h),stroke:'#D6D0C4'},s2);tx(s2,L2-8,y2(h)+5,h,{'text-anchor':'end',fill:'#3d3935'})}
+var xs=function(i){return L2+60+i*(R2-L2-120)/3};
+el('polyline',{points:e.map(function(r,i){return xs(i)+','+y2(r[1])}).join(' '),fill:'none',stroke:'#A63D1A','stroke-width':3},s2);
+e.forEach(function(r,i){el('circle',{cx:xs(i),cy:y2(r[1]),r:5,fill:'#A63D1A'},s2);
+ tx(s2,xs(i),y2(r[1])-12,r[1].toFixed(2),{'text-anchor':'middle','font-weight':600});
+ tx(s2,xs(i),B2+24*K,r[0],{'text-anchor':'middle'});
+ tx(s2,xs(i),B2+48*K,r[2]+(K>1?'% single':'% single-author'),{'text-anchor':'middle','font-size':13,fill:'#3d3935'});
+});
+})();
+    </script>
+  </section>
   <section id="template">
     <h2>Do the articles follow a template?</h2>
     <p class="say2" data-draw="sayTemplate" data-source="template">—</p>
@@ -706,6 +748,7 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
     <h2>References</h2>
     <p class="muted">Sources cited in the text, in Chicago author-date style. Indonesian titles are followed by an English translation in brackets.</p>
     <ul class="refs">
+      <li id="ref-beatty2022">Beatty, John R. 2022. “Citation Sources for Legal Scholarship: Ranking the Top 28 Law Faculties.” In <i>The Role of Citation in the Law: A Yale Law School Symposium</i>, edited by Michael Chiorazzi, 113–81. Buffalo, NY: William S. Hein.</li>
       <li id="ref-clarivate">Clarivate. n.d. <i>Web of Science Core Collection</i>. Accessed November 15, 2026. <a href="https://www.webofscience.com" target="_blank" rel="noopener">https://www.webofscience.com</a>.</li>
       <li id="ref-elsevier">Elsevier. n.d. <i>Scopus</i>. Accessed November 15, 2026. <a href="https://www.scopus.com" target="_blank" rel="noopener">https://www.scopus.com</a>.</li>
       <li id="ref-harrison2015">Harrison, Jeffrey L., and Amy R. Mashburn. 2015. “Citations, Justifications, and the Troubled State of Legal Scholarship: An Empirical Study.” <i>Texas A&amp;M Law Review</i> 3 (1): 45–90. <a href="https://doi.org/10.37419/LR.V3.I1.3" target="_blank" rel="noopener">https://doi.org/10.37419/LR.V3.I1.3</a>.</li>
