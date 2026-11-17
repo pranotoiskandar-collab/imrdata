@@ -25,6 +25,7 @@ import os
 import re
 import sys
 import time
+import urllib.error
 import urllib.request
 
 LIST_URL = "https://www.mkri.id/perkara/persidangan/putusan?page={page}&perPage={per}"
@@ -43,6 +44,12 @@ def fetch(url, retries=3):
         try:
             with urllib.request.urlopen(request, timeout=60) as response:
                 return response.read()
+        except urllib.error.HTTPError as error:
+            if error.code in (403, 429):  # blocked or rate-limited: stop, do not retry
+                sys.exit(f"stopped: HTTP {error.code} on {url}")
+            if attempt == retries - 1:
+                raise
+            time.sleep(30 * (attempt + 1))
         except Exception as error:  # network hiccup: back off and retry
             if attempt == retries - 1:
                 raise
