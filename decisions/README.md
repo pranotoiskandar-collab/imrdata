@@ -1,6 +1,6 @@
-# Court decisions: international norms in Indonesian judicial reasoning
+# Court decisions: international norms in judicial reasoning
 
-Corpus of Indonesian court decisions, collected to study how domestic legal reasoning takes up (or leaves out) international norms.
+Corpus of court decisions, collected to study how domestic legal reasoning takes up (or leaves out) international norms. Indonesia first; the DIFC Courts (Dubai) are added as an English-language comparison.
 
 ## Sources
 
@@ -9,6 +9,7 @@ Corpus of Indonesian court decisions, collected to study how domestic legal reas
 | Constitutional Court (MK), www.mkri.id | open; crawled first | `scripts/mk_crawl.py` |
 | Supreme Court Direktori Putusan (putusan3.mahkamahagung.go.id) | blocked (403) outside Indonesia; robots.txt disallows by default; access to be requested from the MA | none yet |
 | SIPP (court dockets) | captcha or bot challenge on most courts; dockets only, no reasoning | not planned |
+| DIFC Courts (Dubai), www.difccourts.ae | open; full English text in HTML | `scripts/difc_crawl.py` |
 
 Assessment of every repository (17 Nov 2026): https://claude.ai/artifact/K9pRJRVL4ryuzh2yzN2wuv
 
