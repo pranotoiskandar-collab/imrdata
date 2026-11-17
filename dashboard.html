@@ -158,7 +158,7 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
 @keyframes rdrun{to{stroke-dashoffset:-16}}
 @media (prefers-reduced-motion:reduce){.rd .dash{animation:none}}
 .rd .node{fill:var(--rd-bg);stroke:var(--rd-ink);stroke-width:1.2}
-.rd .nlab{font-size:15px;font-weight:600;fill:var(--rd-ink)}#rd-flow-svg{display:block;overflow:hidden}@media (max-width:640px){.rd .nlab,.rd .nnum,#rd-flow-svg .nnum{font-size:24px!important}}
+.rd .nlab{font-size:15px;font-weight:600;fill:var(--rd-ink)}#rd-flow-svg{display:block;overflow:hidden}#rd-flow-svg .nlab,#rd-flow-svg .nnum{font-size:var(--lfs,15px)!important}@media (max-width:640px){.rd .nlab,.rd .nnum{font-size:24px}}
 .rd .nnum{font-size:15px;font-weight:700}
 .rd .halo{fill:rgba(166,61,26,.1);stroke:var(--rd-out);stroke-width:1;stroke-dasharray:3 3}
 .rd .hit{fill:none;stroke:transparent;cursor:pointer}
@@ -1342,7 +1342,7 @@ const T=(S,x,y,t,o)=>{const e=el('text',Object.assign({x,y},o||{}),S);e.textCont
  bO.onclick=()=>{bO.setAttribute('aria-pressed','true');bI.setAttribute('aria-pressed','false');draw('out')};
  bI.onclick=()=>{bI.setAttribute('aria-pressed','true');bO.setAttribute('aria-pressed','false');draw('in')};
  let cur='out';const d0=draw;draw=m=>{cur=m;d0(m)};draw('out');
- const vb=()=>S.setAttribute('viewBox',innerWidth<640?'200 60 700 400':'0 0 1000 470');vb();let rt=0;addEventListener('resize',()=>{vb();clearTimeout(rt);rt=setTimeout(()=>draw(cur),150)});
+ const vb=()=>{S.setAttribute('viewBox',innerWidth<640?'200 60 700 400':'0 0 1000 470');const cw=S.getBoundingClientRect().width;if(cw)S.style.setProperty('--lfs',(15*(innerWidth<640?700:1000)/cw).toFixed(1)+'px')};vb();let rt=0;addEventListener('resize',()=>{vb();clearTimeout(rt);rt=setTimeout(()=>draw(cur),150)});
 })();
 // ---------- units
 (function(){const E=$('rd-units');if(!E)return;
