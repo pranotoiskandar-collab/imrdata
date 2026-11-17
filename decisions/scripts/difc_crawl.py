@@ -31,7 +31,7 @@ import urllib.request
 BASE = "https://www.difccourts.ae"
 LIST_URL = BASE + "/rules-decisions/judgments-orders?ccm_paging_p={page}&ccm_order_by=ak_date&ccm_order_by_direction=desc"
 USER_AGENT = "imrdata-research-crawler/0.1 (+https://github.com/pranotoiskandar-collab/imrdata)"
-FIELDS = ["case_no", "title", "date", "court", "doc_type", "url"]
+FIELDS = ["case_no", "title", "date", "court", "label", "url"]
 MONTHS = {m: i for i, m in enumerate(
     "January February March April May June July August September October November December".split(), 1)}
 
@@ -40,11 +40,16 @@ ITEM = re.compile(
     r'<p class="label_small">(.*?)</p>', re.S)
 DETAIL = re.compile(r'<div class="content_set_detail[^"]*">\s*<div class="content_desc">(.*?)<div class="push">', re.S)
 HEADING = re.compile(r'<div class="div_outer">\s*<h4>(.*?)</h4>', re.S)
-CASE_NO = re.compile(r"\b((?:SCT|CFI|CA|ARB|ENF|TCD|DEC|JJC)\s*\d{3,4}\s*/\s*\d{4})")
-CITATION = re.compile(r"\[(\d{4})\]\s*DIFC\s+([A-Z]{2,3})\s+(\d{3,4})")
-COURTS = ["Small Claims Tribunal", "Court of First Instance", "Court of Appeal", "Arbitration", "Enforcement",
-          "Technology and Construction Division", "Joint Judicial Committee", "Court Administrative Orders",
-          "Digital Economy Court"]
+CASE_NO = re.compile(r"\b(SCT|CFI|CA|ARB|ENF|TCD|DEC|JJC)[\s/-]*(\d{3,4})\s*[/-]\s*(\d{4})")
+CITATION = re.compile(r"\[(\d{4})\]\s*(?:DIFC\s+)?(SCT|CFI|CA|ARB|ENF|TCD|DEC|JJC)\s+(\d{3,4})")
+# The court comes from the URL folder; the site's own label is a loose tag list.
+COURTS = {
+    "small-claims-tribunal": "Small Claims Tribunal", "court-first-instance": "Court of First Instance",
+    "court-appeal": "Court of Appeal", "arbitration": "Arbitration", "enforcement": "Enforcement",
+    "technology-and-construction-division": "Technology and Construction Division",
+    "joint-judicial-committee": "Joint Judicial Committee",
+    "court-administrative-orders": "Court Administrative Orders", "digital-economy-court": "Digital Economy Court",
+}
 
 
 def fetch(url, retries=3):
@@ -83,24 +88,28 @@ def iso_date(text):
 
 
 def split_label(label):
-    """'November 06, 2026  Court of First Instance - Orders' -> date, court, type."""
+    """'November 06, 2026  Court of First Instance - Orders' -> ISO date, rest of the label."""
     label = re.sub(r"\s+", " ", html.unescape(label)).strip()
     match = re.match(r"([A-Za-z]+ \d{1,2}, \d{4}) ?(.*)", label)
-    date, rest = (match.group(1), match.group(2)) if match else ("", label)
-    court, _, doc_type = rest.rpartition(" - ")
-    court = (court or rest).strip()
-    court = {name.lower(): name for name in COURTS}.get(court.lower(), court)
-    return iso_date(date), court, doc_type.strip().capitalize()
+    return (iso_date(match.group(1)), match.group(2)) if match else ("", label)
+
+
+def case_number(text):
+    """'CFI 024/2026', 'ARB/031/2025' or '[2025] SCT 946' -> 'CFI 024/2026' form."""
+    case = CASE_NO.search(text)
+    if case:
+        return f"{case.group(1)} {case.group(2)}/{case.group(3)}"
+    cite = CITATION.search(text)
+    return f"{cite.group(2)} {cite.group(3)}/{cite.group(1)}" if cite else ""
 
 
 def row_from(url, title, label):
+    url = html.unescape(url)
     title = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", "", title))).strip()
-    date, court, doc_type = split_label(label)
-    case = CASE_NO.search(title)
-    cite = CITATION.search(title)
-    case_no = case.group(1) if case else (f"{cite.group(2)} {cite.group(3)}/{cite.group(1)}" if cite else "")
-    return {"case_no": case_no, "title": title, "date": date,
-            "court": court, "doc_type": doc_type, "url": html.unescape(url)}
+    date, label = split_label(label)
+    folder = url.split("/judgments-orders/")[-1].split("/")[0]
+    return {"case_no": case_number(title), "title": title, "date": date,
+            "court": COURTS.get(folder, folder), "label": label, "url": url}
 
 
 def crawl_list(out, delay, max_pages):
