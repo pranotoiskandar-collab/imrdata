@@ -14,6 +14,10 @@ Assessment of every repository (17 Nov 2026): https://claude.ai/artifact/K9pRJRV
 
 ## MK decisions
 
+`tables/mk_decisions.csv` was collected on 17 Nov 2026: **5,207 decisions** (the site listed 5,208; one moved between pages during collection), 2003-11-14 to 2026-11-12. PUU 2,608 · PHPKADA 1,570 · PHPU 998 · SKLN 31. Every row has a PDF link; one row has an empty `amar_putusan`, and a few PHPU rows carry very long rulings (up to ~300,000 characters), so raise Python's `csv.field_size_limit` when reading it.
+
+**How it was collected.** www.mkri.id answers scripted clients with HTTP 403 (tested once from a Mac with this script's user agent; the script stops on 403/429 and does not retry). The list was therefore read in the Claude desktop app's browser, one page of 100 every 10 seconds, with the same parsing logic as `scripts/mk_crawl.py`. The script is kept for when MK grants access (a request for a bulk export was drafted the same day).
+
 ```
 cd decisions/scripts
 python3 mk_crawl.py list --out ../tables/mk_decisions.csv          # ~53 requests, 5 s apart
