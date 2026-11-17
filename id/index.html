@@ -1384,7 +1384,7 @@ const T=(S,x,y,t,o)=>{const e=el('text',Object.assign({x,y},o||{}),S);e.textCont
  T(S,994,mid-12,'takes more than it gives ↑',{'text-anchor':'end',class:'ink'});T(S,6,mid+22,'↓ gives more than it takes',{class:'ink'});
  const top=B[0],bot=B[B.length-1];T(S,bw*1.5+6,mid-140,top.j.split(':')[0]+' +'+top.n);T(S,1000-bw*1.5-6,mid+148,bot.j.split(':')[0]+' '+bot.n,{'text-anchor':'end'});})();
 // ---------- rush
-(function(){const S=$('rd-rush');if(!S)return;if(innerWidth<640)S.setAttribute('viewBox','0 0 1000 350');
+(function(){const S=$('rd-rush');if(!S)return;S.setAttribute('viewBox',innerWidth<640?'0 0 1000 350':'0 -34 1000 364');
  const x=y=>40+(y-2012)*(920/14),base=300,r=7;
  el('line',{x1:20,x2:980,y1:base+2,y2:base+2,stroke:'var(--rd-ink)'},S);
  for(let y=2012;y<=2026;y++)T(S,x(y),base+(innerWidth<640?42:20),(innerWidth<640?y%4===0:(y%2===0||y===2019))?String(y):'',{'text-anchor':'middle'});
@@ -1392,7 +1392,7 @@ const T=(S,x,y,t,o)=>{const e=el('text',Object.assign({x,y},o||{}),S);e.textCont
   if(n)T(S,x(y),base-r-2-Math.floor((n-1)/2)*(2*r+2)-14,String(n),{'text-anchor':'middle',class:'ink'})});
  const byY={};D.regs.forEach(r=>(byY[r[0]]=byY[r[0]]||[]).push(r));
  Object.entries(byY).forEach(([y,rs])=>rs.forEach((r,k)=>{const cx=x(+y),cy=24+k*16;el('line',{x1:cx,x2:cx,y1:cy,y2:cy+8,stroke:'var(--rd-back)'},S);el('circle',{cx,cy,r:5,fill:'var(--rd-back)'},S);const h=el('circle',{cx,cy,r:9,fill:'transparent'},S);h.style.cursor='help';h.addEventListener('pointermove',e=>showTip(e,`<b>${y}</b> · ${r[1]}<br>${r[2]}`));h.addEventListener('pointerleave',hideTip)}));
- if(innerWidth>=640)T(S,20,12,'Indonesian rules and incentives (hover a pin)',{class:'ink'});})();
+ if(innerWidth>=640)T(S,20,-12,'Indonesian rules and incentives (hover a pin)',{class:'ink'});})();
 // ---------- fingerprint
 (function(){const E=$('rd-fp');if(!E)return;
  E.innerHTML=D.template.map(([m,id,up])=>{const d=(v,c)=>`<div class="rd-dots ${c}"><span class="who">${c==='id'?'87 journals':'University-press journals'}</span>${Array.from({length:20},(_,k)=>`<i class="${k<Math.round(v/5)?'on':''}"></i>`).join('')}<span>${v}%</span></div>`;return `<div class="rd-fprow"><div>${m}</div><div style="display:flex;flex-direction:column;gap:6px">${d(id,'id')}${d(up,'up')}</div></div>`}).join('');})();
