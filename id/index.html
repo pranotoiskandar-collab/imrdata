@@ -857,11 +857,11 @@ e.forEach(function(r,i){el('circle',{cx:xs(i),cy:y2(r[1]),r:5,fill:'#A63D1A'},s2
       const sel = document.getElementById('tlsel');
       if (sel && sel.options.length === 1) { lanes.forEach((l) => { const o = document.createElement('option'); o.value = l; o.textContent = l; sel.appendChild(o); }); sel.value = window.ijTl.lane; sel.addEventListener('change', () => { window.ijTl.lane = sel.value; dash.draw('tlList'); }); }
       el.replaceChildren();
-      const W = el.clientWidth || 800, narrow = W < 560, laneH = 64, top = 14, padL = 8, padR = 12;
+      const W = el.clientWidth || 800, narrow = W < 560, laneH = narrow ? 70 : 100, top = 14, padL = 8, padR = 12;
       const H = top + lanes.length * laneH + 26;
       const x = d3.scaleLinear().domain([1997.5, 2026.5]).range([padL, W - padR]);
       const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Timeline of rankings, databases and Indonesian rules that reward Scopus publication, 1998 to 2026');
-      lanes.forEach((l, i) => { const y = top + i * laneH; svg.append('line').attr('x1', padL).attr('x2', W - padR).attr('y1', y + laneH - 18).attr('y2', y + laneH - 18).attr('stroke', 'var(--color-border-line)'); svg.append('text').attr('class', 'lane').attr('x', padL).attr('y', y + 2).attr('dy', '0.7em').text(l); });
+      lanes.forEach((l, i) => { const y = top + i * laneH; svg.append('line').attr('x1', padL).attr('x2', W - padR).attr('y1', y + laneH - 18).attr('y2', y + laneH - 18).attr('stroke', 'var(--color-border-line)'); svg.append('text').attr('class', 'lane').attr('x', padL).attr('y', y + 12).attr('dy', '0.7em').text(l); });
       svg.append('g').attr('class', 'axis').attr('transform', `translate(0,${H - 22})`).call(d3.axisBottom(x).tickValues(narrow ? [2000, 2005, 2010, 2015, 2020, 2025] : d3.range(1998, 2027, 2)).tickFormat(d3.format('d')).tickSizeOuter(0));
       const tip = window.ijTip ? window.ijTip(el) : null;
       const cnt = {};
@@ -876,9 +876,9 @@ e.forEach(function(r,i){el('circle',{cx:xs(i),cy:y2(r[1]),r:5,fill:'#A63D1A'},s2
       if (!narrow) {
         d.filter((r) => r.key).forEach((r) => {
           const li = lanes.indexOf(r.lane); const short = r.tag || r.label;
-          const t = svg.append('text').attr('class', 'kl halo').attr('x', x(r.year)).attr('y', top + li * laneH + 30).attr('text-anchor', x(r.year) > W * 0.85 ? 'end' : x(r.year) < W * 0.12 ? 'start' : 'middle').text(short);
+          const t = svg.append('text').attr('class', 'kl halo').attr('x', x(r.year)).attr('y', top + li * laneH + laneH - 34).attr('text-anchor', x(r.year) > W * 0.85 ? 'end' : x(r.year) < W * 0.12 ? 'start' : 'middle').text(short);
           const b = t.node().getBBox(); const box = { x0: b.x - 2, x1: b.x + b.width + 2, y0: b.y, y1: b.y + b.height };
-          if (placed.some((p) => box.x0 < p.x1 && box.x1 > p.x0 && box.y0 < p.y1 && box.y1 > p.y0)) { t.attr('y', top + li * laneH + 18); const b2 = t.node().getBBox(); const box2 = { x0: b2.x - 2, x1: b2.x + b2.width + 2, y0: b2.y, y1: b2.y + b2.height }; if (placed.some((p) => box2.x0 < p.x1 && box2.x1 > p.x0 && box2.y0 < p.y1 && box2.y1 > p.y0)) t.remove(); else placed.push(box2); } else placed.push(box);
+          if (placed.some((p) => box.x0 < p.x1 && box.x1 > p.x0 && box.y0 < p.y1 && box.y1 > p.y0)) { t.attr('y', top + li * laneH + laneH - 50); const b2 = t.node().getBBox(); const box2 = { x0: b2.x - 2, x1: b2.x + b2.width + 2, y0: b2.y, y1: b2.y + b2.height }; if (placed.some((p) => box2.x0 < p.x1 && box2.x1 > p.x0 && box2.y0 < p.y1 && box2.y1 > p.y0)) t.remove(); else placed.push(box2); } else placed.push(box);
         });
       }
     });
@@ -1511,6 +1511,11 @@ body{background:#FAF8F3}
 .ij .rd-stage svg{margin-top:0!important;margin-bottom:0!important}
 .ij p.figleg{margin-top:calc(-1*var(--fig-gap) + 8px)!important;margin-bottom:var(--fig-gap)!important}
 .ij .ap-stats{max-width:680px;margin-left:auto!important;margin-right:auto!important;box-sizing:border-box}
+.ij .controls{max-width:680px;margin:var(--fig-gap) auto!important;box-sizing:border-box;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.ij .controls label{display:flex;gap:10px;align-items:center;flex:1 1 auto;min-width:0}.ij .controls label select{flex:1 1 auto;min-width:0}
+.ij .controls select{font:inherit;font-size:var(--ts-cap)!important;padding:6px 10px;max-width:100%}
+.ij ul.evlist{max-width:680px;margin:var(--fig-gap) auto!important;box-sizing:border-box}
+.ij ul.evlist li{margin-bottom:14px}
 </style>
 <script>
 (function(){function go(){
