@@ -17,7 +17,7 @@ Checked 17 Nov 2026 (robots.txt and terms).
 
 | Jurisdiction | Source | How |
 |---|---|---|
-| South Korea | law.go.kr Open API: Supreme and lower courts, Constitutional Court | `scripts/kr_lawgo.py` |
+| South Korea | law.go.kr public search (robots.txt allows all): precedents and Constitutional Court | browser, slow; `scripts/kr_lawgo.py` if an API key is obtained later |
 | Japan | courts.go.jp judgment search | browser, slow |
 | Hong Kong | HKLII (robots.txt disallows only `/api`) | browser, slow |
 | Taiwan | Judicial Yuan open-data bulk files (bots disallowed; manual download) | filter after download |
