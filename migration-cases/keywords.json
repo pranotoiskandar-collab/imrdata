@@ -1,0 +1,39 @@
+{
+  "_note": "Search terms per jurisdiction, in the court's own languages. 'migration' terms find candidate cases; 'farm' terms flag cases for the farmworker view of the Migration Law Atlas (Global Farmworker Law).",
+  "KR": {
+    "migration": ["출입국관리법", "난민", "강제퇴거", "외국인근로자", "고용허가", "체류자격", "인신매매", "국적", "보호명령", "결혼이민"],
+    "farm": ["농업", "농장", "축산", "어업", "어선", "선원", "계절근로"]
+  },
+  "JP": {
+    "migration": ["出入国管理", "難民", "退去強制", "在留資格", "在留特別許可", "技能実習", "特定技能", "仮放免", "収容", "国籍", "人身取引"],
+    "farm": ["農業", "農家", "農場", "畜産", "漁業", "漁船", "水産"]
+  },
+  "TW": {
+    "migration": ["入出國及移民法", "就業服務法", "外籍勞工", "移工", "外籍看護", "驅逐出國", "收容", "難民", "國籍", "人口販運", "仲介"],
+    "farm": ["農業", "農場", "漁業", "漁船", "遠洋", "船員", "漁工", "農業移工"]
+  },
+  "HK": {
+    "migration": ["non-refoulement", "torture claim", "deportation", "removal order", "Immigration Ordinance", "foreign domestic helper", "right of abode", "trafficking", "detention pending removal", "asylum"],
+    "farm": ["farm", "farmworker", "agricultur", "fishing", "fisherman", "fishermen", "vessel crew"]
+  },
+  "MO": {
+    "migration": ["trabalhador não residente", "imigração ilegal", "expulsão", "interdição de entrada", "autorização de residência", "tráfico de pessoas", "非本地勞工", "非法移民", "驅逐出境", "禁止入境", "居留許可"],
+    "farm": ["agricultura", "pesca", "農業", "漁業"]
+  },
+  "MN": {
+    "migration": ["гадаадын иргэн", "цагаач", "албадан гаргах", "оршин суух зөвшөөрөл", "хүн худалдаалах", "гадаадад хөдөлмөр"],
+    "farm": ["хөдөө аж ахуй", "мал аж ахуй", "загас"]
+  },
+  "CN": {
+    "migration": ["出境入境管理法", "外国人", "非法就业", "遣送出境", "驱逐出境", "拐卖", "偷越国境", "组织他人偷越国（边）境"],
+    "farm": ["农业", "渔业", "渔船", "船员"]
+  },
+  "GCC_AR": {
+    "migration": ["الإقامة", "الإبعاد", "العمالة الوافدة", "العامل الوافد", "الكفيل", "الكفالة", "الاتجار بالبشر", "الجنسية", "العمالة المنزلية", "تأشيرة"],
+    "farm": ["زراعي", "مزرعة", "عمال الزراعة", "الصيد", "صياد", "الرعي", "راعي"]
+  },
+  "GCC_EN": {
+    "migration": ["visa", "residence permit", "deportation", "sponsor", "kafala", "end of service", "absconding", "work permit", "trafficking", "domestic worker"],
+    "farm": ["farm", "agricultur", "fishing", "shepherd", "livestock"]
+  }
+}
