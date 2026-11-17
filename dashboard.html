@@ -1219,7 +1219,7 @@ e.forEach(function(r,i){el('circle',{cx:xs(i),cy:y2(r[1]),r:5,fill:'#A63D1A'},s2
     dash.draw('sayTrend', (el) => guard('trend', el, (d) => { const p = d.filter((r) => r.abroad_same_journals !== ''); if (p.length < 2) { el.textContent = '—'; return; } const a = p[0], b = p[p.length - 1]; el.textContent = `For the same ${43} journals, the share of citations from outside Indonesia went from ${a.abroad_same_journals}% (${a.year}) to ${b.abroad_same_journals}% (${b.year}). It is not growing: if anything, the conversation has turned slightly more inward.`; }));
     dash.draw('trendChart', (el) => guard('trend', el, (rows) => {
       const d = rows.map((r) => ({ year: +r.year, all: +r.abroad, n: +r.journals, same: r.abroad_same_journals === '' ? null : +r.abroad_same_journals }));
-      el.replaceChildren(); const W = el.clientWidth || 700, H = 252, m = { l: 36, r: 20, t: 16, b: 58 };
+      el.replaceChildren(); const W = el.clientWidth || 700, H = 250, m = { l: 36, r: 20, t: 16, b: 56 };
       const x = d3.scalePoint().domain(d.map((r) => r.year)).range([m.l + 20, W - m.r - 20]);
       const y = d3.scaleLinear().domain([0, 40]).range([H - m.b, m.t]);
       const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Line chart of the share of citations from outside Indonesia by year');
@@ -1232,7 +1232,7 @@ e.forEach(function(r,i){el('circle',{cx:xs(i),cy:y2(r[1]),r:5,fill:'#A63D1A'},s2
       svg.append('path').datum(d.filter((r) => r.same !== null)).attr('d', line('same')).attr('fill', 'none').attr('stroke', dash.colors[0]).attr('stroke-width', 2.5);
       svg.selectAll('circle.a').data(d).join('circle').attr('cx', (r) => x(r.year)).attr('cy', (r) => y(r.all)).attr('r', 4).style('fill', 'var(--cds-chart-muted)').on('pointermove', (ev, r) => tip.show(ev, [[String(r.year)], ['All journals with data', r.all + '%'], ['Journals', r.n]])).on('pointerleave', () => tip.hide());
       svg.selectAll('circle.s').data(d.filter((r) => r.same !== null)).join('circle').attr('cx', (r) => x(r.year)).attr('cy', (r) => y(r.same)).attr('r', 4.5).style('fill', dash.colors[0]).on('pointermove', (ev, r) => tip.show(ev, [[String(r.year)], ['Same 43 journals', r.same + '%']])).on('pointerleave', () => tip.hide());
-      svg.selectAll('text.n').data(d).join('text').attr('x', (r) => x(r.year)).attr('y', H - m.b + 50).attr('text-anchor', 'middle').text((r) => (W < 520 ? 'n=' : '') + r.n + (W < 520 ? '' : ' journals'));
+      svg.selectAll('text.n').data(d).join('text').attr('x', (r) => x(r.year)).attr('y', H - m.b + 44).attr('text-anchor', 'middle').text((r) => (W < 330 ? 'n=' : '') + r.n + (W < 330 ? '' : ' journals'));
       const lg = d3.select(el).append('div').attr('class', 'legend'); lg.append('span').style('--sw', dash.colors[0]).text('Same 43 journals'); lg.append('span').style('--sw', 'var(--cds-chart-muted)').text('All journals with data that year');
     }));
     dash.draw('sayBoards', (el) => guard('boards', el, (d) => { const g = (k) => d.find((r) => r.shared === k); const n = g('none'), t = g('3+'); el.textContent = `Pairs of journals with no shared board members exchange ${n.avg_per_pair} citations on average. Pairs sharing three or more members exchange ${t.avg_per_pair}, about ${Math.round(t.avg_per_pair / n.avg_per_pair)} times as many. Those ${t.pairs} pairs are ${t.pct_of_pairs}% of all pairs but carry ${t.pct_of_citations}% of the citations between the journals.`; }));

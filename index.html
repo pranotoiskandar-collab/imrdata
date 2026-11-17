@@ -1239,7 +1239,7 @@ e.forEach(function(r,i){el('circle',{cx:xs(i),cy:y2(r[1]),r:5,fill:'#A63D1A'},s2
     dash.draw('sayTrend', (el) => guard('trend', el, (d) => { const p = d.filter((r) => r.abroad_same_journals !== ''); if (p.length < 2) { el.textContent = '—'; return; } const a = p[0], b = p[p.length - 1]; el.textContent = `For the same ${43} journals, the share of citations from outside Indonesia went from ${a.abroad_same_journals}% (${a.year}) to ${b.abroad_same_journals}% (${b.year}). It is not growing: if anything, the conversation has turned slightly more inward.`; }));
     dash.draw('trendChart', (el) => guard('trend', el, (rows) => {
       const d = rows.map((r) => ({ year: +r.year, all: +r.abroad, n: +r.journals, same: r.abroad_same_journals === '' ? null : +r.abroad_same_journals }));
-      el.replaceChildren(); const W = el.clientWidth || 700, H = 252, m = { l: 36, r: 20, t: 16, b: 58 };
+      el.replaceChildren(); const W = el.clientWidth || 700, H = 250, m = { l: 36, r: 20, t: 16, b: 56 };
       const x = d3.scalePoint().domain(d.map((r) => r.year)).range([m.l + 20, W - m.r - 20]);
       const y = d3.scaleLinear().domain([0, 40]).range([H - m.b, m.t]);
       const svg = d3.select(el).append('svg').attr('viewBox', `0 0 ${W} ${H}`).attr('role', 'img').attr('aria-label', 'Line chart of the share of citations from outside Indonesia by year');
@@ -1252,7 +1252,7 @@ e.forEach(function(r,i){el('circle',{cx:xs(i),cy:y2(r[1]),r:5,fill:'#A63D1A'},s2
       svg.append('path').datum(d.filter((r) => r.same !== null)).attr('d', line('same')).attr('fill', 'none').attr('stroke', dash.colors[0]).attr('stroke-width', 2.5);
       svg.selectAll('circle.a').data(d).join('circle').attr('cx', (r) => x(r.year)).attr('cy', (r) => y(r.all)).attr('r', 4).style('fill', 'var(--cds-chart-muted)').on('pointermove', (ev, r) => tip.show(ev, [[String(r.year)], ['All journals with data', r.all + '%'], ['Journals', r.n]])).on('pointerleave', () => tip.hide());
       svg.selectAll('circle.s').data(d.filter((r) => r.same !== null)).join('circle').attr('cx', (r) => x(r.year)).attr('cy', (r) => y(r.same)).attr('r', 4.5).style('fill', dash.colors[0]).on('pointermove', (ev, r) => tip.show(ev, [[String(r.year)], ['Same 43 journals', r.same + '%']])).on('pointerleave', () => tip.hide());
-      svg.selectAll('text.n').data(d).join('text').attr('x', (r) => x(r.year)).attr('y', H - m.b + 50).attr('text-anchor', 'middle').text((r) => (W < 520 ? 'n=' : '') + r.n + (W < 520 ? '' : ' journals'));
+      svg.selectAll('text.n').data(d).join('text').attr('x', (r) => x(r.year)).attr('y', H - m.b + 44).attr('text-anchor', 'middle').text((r) => (W < 330 ? 'n=' : '') + r.n + (W < 330 ? '' : ' journals'));
       const lg = d3.select(el).append('div').attr('class', 'legend'); lg.append('span').style('--sw', dash.colors[0]).text('Same 43 journals'); lg.append('span').style('--sw', 'var(--cds-chart-muted)').text('All journals with data that year');
     }));
     dash.draw('sayBoards', (el) => guard('boards', el, (d) => { const g = (k) => d.find((r) => r.shared === k); const n = g('none'), t = g('3+'); el.textContent = `Pairs of journals with no shared board members exchange ${n.avg_per_pair} citations on average. Pairs sharing three or more members exchange ${t.avg_per_pair}, about ${Math.round(t.avg_per_pair / n.avg_per_pair)} times as many. Those ${t.pairs} pairs are ${t.pct_of_pairs}% of all pairs but carry ${t.pct_of_citations}% of the citations between the journals.`; }));
@@ -1500,10 +1500,11 @@ body{background:#FAF8F3}
 .ij h3,.ij h3.muted{font-size:var(--ts-h3)!important;font-weight:700!important;color:var(--lr-ink)!important}
 .ij .rd-stat .n,.ij .ap-stats b,.ij .rd-big,.ij span.big,.ij div.n{font-size:var(--ts-big)!important;line-height:1!important}
 .ij .key span,.ij .legend span,.ij .rd-legend span,.ij .pj-leg span,.ij button span,.ij .ij p.lr-lede.muted,.ij p.muted.lr-lede{font-size:var(--ts-cap)!important}
+.ij .key span,.ij .legend span,.ij .rd-legend span,.ij .pj-leg span{font-size:13px!important}@media(max-width:639px){.ij .key span,.ij .legend span,.ij .rd-legend span,.ij .pj-leg span{font-size:12px!important}}
 .ij .rd-tr>span,.ij .rd-bar div,.ij .pj-trk span{font-size:var(--ts-cap)!important}
 .ij .ap-leg span,.ij .rd-fprow,.ij .rd-fprow *,.ij .rd-receipt,.ij .rd-receipt *:not(h3):not(h4){font-size:var(--ts-cap)!important}
 .ij span.f,.ij .f>span{font-size:var(--ts-body)!important}.ij button b,.ij .netpanel b{font-size:var(--ts-cap)!important}
-.ij svg text{font-size:var(--svgfs,15px)!important}
+.ij svg text{font-size:var(--svgfs,13px)!important}
 .ij .rd-tog{max-width:680px;margin-left:auto!important;margin-right:auto!important;box-sizing:border-box}
 /* breathing room around every chart, table and illustration (oto, 17 Nov) */
 .ij{--fig-gap:28px}
@@ -1516,6 +1517,8 @@ body{background:#FAF8F3}
 .ij .controls select{font:inherit;font-size:var(--ts-cap)!important;padding:6px 10px;max-width:100%}
 .ij ul.evlist{max-width:680px;margin:var(--fig-gap) auto!important;box-sizing:border-box}
 .ij ul.evlist li{margin-bottom:14px}
+
+.ij dl{display:block!important;max-width:none!important;box-sizing:border-box;width:min(820px,calc(100vw - 32px))!important;margin-left:calc(50% - min(410px,50vw - 16px))!important;margin-right:0!important}.ij dl>dt{display:block!important;font-weight:700;margin:18px 0 4px!important;grid-column:auto!important}.ij dl>dt:first-child{margin-top:0!important}.ij dl>dd{display:block!important;margin:0!important;grid-column:auto!important;max-width:none!important}
 </style>
 <script>
 (function(){function go(){
@@ -1545,6 +1548,6 @@ body{background:#FAF8F3}
 }
 document.readyState==='loading'?addEventListener('DOMContentLoaded',()=>setTimeout(go,50)):setTimeout(go,50);setTimeout(go,1700);})();
 </script>
-<script>(function(){function fit(){var T=innerWidth<640?13:15;document.querySelectorAll('.ij svg').forEach(function(g){if(!g.querySelector('text'))return;var m=g.getScreenCTM&&g.getScreenCTM();var k=m?Math.abs(m.a):1;var f=k?T/k:T;g.style.setProperty('--svgfs',f.toFixed(2)+'px')})}var t=0;function q(){clearTimeout(t);t=setTimeout(fit,60)}addEventListener('load',fit);addEventListener('resize',q);document.addEventListener('toggle',q,true);document.addEventListener('click',q,true);new MutationObserver(function(m){for(var i=0;i<m.length;i++){if(m[i].target.closest&&m[i].target.closest('svg')){q();return}}}).observe(document.documentElement,{childList:true,subtree:true});setTimeout(fit,300);setTimeout(fit,1500)})();</script>
+<script>(function(){function fit(){var T=innerWidth<640?12:13;document.querySelectorAll('.ij svg').forEach(function(g){if(!g.querySelector('text'))return;var m=g.getScreenCTM&&g.getScreenCTM();var k=m?Math.abs(m.a):1;var f=k?T/k:T;g.style.setProperty('--svgfs',f.toFixed(2)+'px')})}var t=0;function q(){clearTimeout(t);t=setTimeout(fit,60)}addEventListener('load',fit);addEventListener('resize',q);document.addEventListener('toggle',q,true);document.addEventListener('click',q,true);new MutationObserver(function(m){for(var i=0;i<m.length;i++){if(m[i].target.closest&&m[i].target.closest('svg')){q();return}}}).observe(document.documentElement,{childList:true,subtree:true});setTimeout(fit,300);setTimeout(fit,1500)})();</script>
 <script data-goatcounter="https://ijicl-data.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body></html>
