@@ -178,7 +178,7 @@ window.__ijDrawAll=function(){Object.keys(DRAW).forEach(function(n){dash.draw(n)
 @keyframes rdrun{to{stroke-dashoffset:-16}}
 @media (prefers-reduced-motion:reduce){.rd .dash{animation:none}}
 .rd .node{fill:var(--rd-bg);stroke:var(--rd-ink);stroke-width:1.2}
-.rd .nlab{font-size:15px;font-weight:600;fill:var(--rd-ink)}#rd-flow-svg{display:block;overflow:hidden}#rd-flow-svg .nlab,#rd-flow-svg .nnum{font-size:var(--lfs,15px)!important}@media (max-width:640px){.rd .nlab,.rd .nnum{font-size:24px}}
+.rd .nlab{font-size:15px;font-weight:600;fill:var(--rd-ink)}#rd-flow-svg{display:block;overflow:hidden}@media (max-width:640px){.rd .nlab,.rd .nnum{font-size:24px}}
 .rd .nnum{font-size:15px;font-weight:700}
 .rd .halo{fill:rgba(166,61,26,.1);stroke:var(--rd-out);stroke-width:1;stroke-dasharray:3 3}
 .rd .hit{fill:none;stroke:transparent;cursor:pointer}
@@ -1322,7 +1322,7 @@ const T=(S,x,y,t,o)=>{const e=el('text',Object.assign({x,y},o||{}),S);e.textCont
  out:{lede:'Indonesia’s 87 Scopus law journals cite Western publishers tens of thousands of times. Those publishers’ books and journals cite them back a few hundred times.',
   flows:[{f:'indo',t:'comm',n:37885,c:'out',bend:.3,lab:'37,885',lx:40,ly:-30,txt:'references in the 87 journals to books and journals of Elsevier, Springer, Wiley, Taylor & Francis, SAGE, Emerald, Brill and De Gruyter (2022–2025)'},
    {f:'comm',t:'indo',n:527,c:'back',bend:.12,lab:'527 back',lx:30,ly:14,txt:'documents from those commercial publishers citing the 87 journals (each journal’s CiteScore window)'},
-   {f:'indo',t:'univ',n:6868,c:'out',bend:.36,lab:'6,868',ly:-10,plx:-120,ply:34,txt:'references to Western university presses: Oxford, Cambridge, Chicago, Johns Hopkins, Duke, Edinburgh, Toronto, MIT and similar'},
+   {f:'indo',t:'univ',n:6868,c:'out',bend:.36,lab:'6,868',ly:-10,dlx:-20,dly:24,plx:-60,ply:44,txt:'references to Western university presses: Oxford, Cambridge, Chicago, Johns Hopkins, Duke, Edinburgh, Toronto, MIT and similar'},
    {f:'univ',t:'indo',n:13,c:'back',bend:.2,lab:'13 back',ly:16,txt:'documents from those university presses citing the 87 journals'}],
   nodes:[['comm','Major commercial publishers',-12,-40],['univ','Western university presses',16]],
   stats:[['o','44,753','references going out to Western publishers'],['b','540','citations coming back from them'],['','83 : 1','out for every one back']],
@@ -1384,15 +1384,15 @@ const T=(S,x,y,t,o)=>{const e=el('text',Object.assign({x,y},o||{}),S);e.textCont
  T(S,994,mid-12,'takes more than it gives ↑',{'text-anchor':'end',class:'ink'});T(S,6,mid+22,'↓ gives more than it takes',{class:'ink'});
  const top=B[0],bot=B[B.length-1];T(S,bw*1.5+6,mid-140,top.j.split(':')[0]+' +'+top.n);T(S,1000-bw*1.5-6,mid+148,bot.j.split(':')[0]+' '+bot.n,{'text-anchor':'end'});})();
 // ---------- rush
-(function(){const S=$('rd-rush');if(!S)return;
+(function(){const S=$('rd-rush');if(!S)return;if(innerWidth<640)S.setAttribute('viewBox','0 0 1000 350');
  const x=y=>40+(y-2012)*(920/14),base=300,r=7;
  el('line',{x1:20,x2:980,y1:base+2,y2:base+2,stroke:'var(--rd-ink)'},S);
- for(let y=2012;y<=2026;y++)T(S,x(y),base+20,(y%2===0||y===2019)?String(y):'',{'text-anchor':'middle'});
+ for(let y=2012;y<=2026;y++)T(S,x(y),base+(innerWidth<640?42:20),(innerWidth<640?y%4===0:(y%2===0||y===2019))?String(y):'',{'text-anchor':'middle'});
  D.entry.forEach(([y,n,p])=>{for(let k=0;k<n;k++)el('circle',{cx:x(y)+((k%2)?r+1:-(r+1))*(n>1?1:0),cy:base-r-2-Math.floor(k/2)*(2*r+2),r,fill:k<p?'var(--rd-out)':'var(--rd-bg)',stroke:'var(--rd-out)','stroke-width':1.5},S);
   if(n)T(S,x(y),base-r-2-Math.floor((n-1)/2)*(2*r+2)-14,String(n),{'text-anchor':'middle',class:'ink'})});
  const byY={};D.regs.forEach(r=>(byY[r[0]]=byY[r[0]]||[]).push(r));
  Object.entries(byY).forEach(([y,rs])=>rs.forEach((r,k)=>{const cx=x(+y),cy=24+k*16;el('line',{x1:cx,x2:cx,y1:cy,y2:cy+8,stroke:'var(--rd-back)'},S);el('circle',{cx,cy,r:5,fill:'var(--rd-back)'},S);const h=el('circle',{cx,cy,r:9,fill:'transparent'},S);h.style.cursor='help';h.addEventListener('pointermove',e=>showTip(e,`<b>${y}</b> · ${r[1]}<br>${r[2]}`));h.addEventListener('pointerleave',hideTip)}));
- T(S,20,10,'Indonesian rules and incentives (hover a pin)',{class:'ink'});})();
+ if(innerWidth>=640)T(S,20,12,'Indonesian rules and incentives (hover a pin)',{class:'ink'});})();
 // ---------- fingerprint
 (function(){const E=$('rd-fp');if(!E)return;
  E.innerHTML=D.template.map(([m,id,up])=>{const d=(v,c)=>`<div class="rd-dots ${c}"><span class="who">${c==='id'?'87 journals':'University-press journals'}</span>${Array.from({length:20},(_,k)=>`<i class="${k<Math.round(v/5)?'on':''}"></i>`).join('')}<span>${v}%</span></div>`;return `<div class="rd-fprow"><div>${m}</div><div style="display:flex;flex-direction:column;gap:6px">${d(id,'id')}${d(up,'up')}</div></div>`}).join('');})();
@@ -1483,7 +1483,7 @@ body{background:#FAF8F3}
 .ij .lr-sec{width:100%!important;max-width:920px!important;margin:0 auto!important;padding:26px 0 22px!important}
 .ij .lr-sec>h2{display:block!important;width:auto!important;text-align:left!important;margin:0 auto .35em!important;font-size:30px!important}
 .ij .lr-sec>.lr-lede{margin-bottom:0!important}
-.ij .lr-sec>.lr-lede.muted{font-size:17px!important}
+.ij .lr-sec>.lr-lede.muted{font-size:var(--ts-cap)!important}
 .lr-sec.lr-closed>.lr-lede{color:var(--lr-mut)}
 @media (max-width:600px){.ij .lr-sec>h2{font-size:25px!important}}
 .ij .lr-sec>h2,.ij .lr-sec>.lr-lede{width:100%!important;max-width:680px!important;box-sizing:border-box}
@@ -1491,6 +1491,19 @@ body{background:#FAF8F3}
 .ij .lr-body{width:100%!important;max-width:920px!important;margin:0 auto!important;box-sizing:border-box}
 .ij .lr-body>.chart,.ij .lr-body>div{width:100%}
 .ij .lr-body>details,.ij .lr-body>p{max-width:680px!important;margin-left:auto!important;margin-right:auto!important}
+
+/* one type scale for every section (oto, 17 Nov) */
+.ij{--ts-body:21px;--ts-cap:15px;--ts-big:44px;--ts-h3:24px}
+@media (max-width:640px){.ij{--ts-body:19px;--ts-big:30px;--ts-h3:21px}}
+.ij p,.ij li,.ij dt,.ij dd,.ij summary,.ij .say,.ij .say2,.ij .lede,.ij .lr-lede,.ij .ap-mean,.ij span.name,.ij label:not(.muted){font-size:var(--ts-body)!important}
+.ij p.muted,.ij .muted,.ij small,.ij figcaption,.ij .note,.ij .src,.ij label.muted,.ij div.muted,.ij .rd-stat .l,.ij .ap-stats span,.ij .ap-lab,.ij .lr-by,.ij .rd-kick,.ij td,.ij th,.ij .wy,.ij .wn,.ij span.y,.ij span.lab,.ij .pj-hd,.ij .pj-lab,.ij .who,.ij .rd-stamp,.ij .c{font-size:var(--ts-cap)!important}
+.ij h3,.ij h3.muted{font-size:var(--ts-h3)!important;font-weight:700!important;color:var(--lr-ink)!important}
+.ij .rd-stat .n,.ij .ap-stats b,.ij .rd-big,.ij span.big,.ij div.n{font-size:var(--ts-big)!important;line-height:1!important}
+.ij .key span,.ij .legend span,.ij .rd-legend span,.ij .pj-leg span,.ij button span,.ij .ij p.lr-lede.muted,.ij p.muted.lr-lede{font-size:var(--ts-cap)!important}
+.ij .rd-tr>span,.ij .rd-bar div,.ij .pj-trk span{font-size:var(--ts-cap)!important}
+.ij .ap-leg span,.ij .rd-fprow,.ij .rd-fprow *,.ij .rd-receipt,.ij .rd-receipt *:not(h3):not(h4){font-size:var(--ts-cap)!important}
+.ij span.f,.ij .f>span{font-size:var(--ts-body)!important}.ij button b,.ij .netpanel b{font-size:var(--ts-cap)!important}
+.ij svg text{font-size:var(--svgfs,15px)!important}
 </style>
 <script>
 (function(){function go(){
@@ -1520,5 +1533,6 @@ body{background:#FAF8F3}
 }
 document.readyState==='loading'?addEventListener('DOMContentLoaded',()=>setTimeout(go,50)):setTimeout(go,50);setTimeout(go,1700);})();
 </script>
+<script>(function(){function fit(){var T=innerWidth<640?13:15;document.querySelectorAll('.ij svg').forEach(function(g){if(!g.querySelector('text'))return;var m=g.getScreenCTM&&g.getScreenCTM();var k=m?Math.abs(m.a):1;var f=k?T/k:T;g.style.setProperty('--svgfs',f.toFixed(2)+'px')})}var t=0;function q(){clearTimeout(t);t=setTimeout(fit,60)}addEventListener('load',fit);addEventListener('resize',q);document.addEventListener('toggle',q,true);document.addEventListener('click',q,true);new MutationObserver(function(m){for(var i=0;i<m.length;i++){if(m[i].target.closest&&m[i].target.closest('svg')){q();return}}}).observe(document.documentElement,{childList:true,subtree:true});setTimeout(fit,300);setTimeout(fit,1500)})();</script>
 <script data-goatcounter="https://ijicl-data.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body></html>
