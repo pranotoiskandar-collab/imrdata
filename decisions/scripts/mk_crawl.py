@@ -143,8 +143,6 @@ def crawl_list(out, per, delay):
             break
         rows.extend(page_rows)
         print(f"page {page}: {len(page_rows)} rows, {len(rows)} so far", file=sys.stderr)
-        if len(page_rows) < per:
-            break
         page += 1
         time.sleep(delay)
     seen, unique = set(), []
