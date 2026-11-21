@@ -1555,4 +1555,18 @@ document.readyState==='loading'?addEventListener('DOMContentLoaded',()=>setTimeo
 </script>
 <script>(function(){function fit(){var T=innerWidth<640?12:13;document.querySelectorAll('.ij svg').forEach(function(g){if(!g.querySelector('text'))return;var m=g.getScreenCTM&&g.getScreenCTM();var k=m?Math.abs(m.a):1;var f=k?T/k:T;g.style.setProperty('--svgfs',f.toFixed(2)+'px')})}var t=0;function q(){clearTimeout(t);t=setTimeout(fit,60)}addEventListener('load',fit);addEventListener('resize',q);document.addEventListener('toggle',q,true);document.addEventListener('click',q,true);new MutationObserver(function(m){for(var i=0;i<m.length;i++){if(m[i].target.closest&&m[i].target.closest('svg')){q();return}}}).observe(document.documentElement,{childList:true,subtree:true});setTimeout(fit,300);setTimeout(fit,1500)})();</script>
 <script data-goatcounter="https://ijicl-data.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script>/* Usage events for GoatCounter (cookie-free, no personal data): tab and view clicks, language switch, outbound links. Shown under "event/" paths. */
+(function(){
+function send(p,t){try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path:p,title:t||p,event:true});}catch(e){}}
+var lang=(document.documentElement.lang||'en').slice(0,2);
+document.addEventListener('click',function(e){
+ var c=e.target.closest&&e.target.closest('[data-tab],#rd-bOut,#rd-bIn,a[href]');if(!c)return;
+ if(c.dataset&&c.dataset.tab){send('event/tab/'+lang+'/'+c.dataset.tab,'Tab: '+c.dataset.tab);return;}
+ if(c.id==='rd-bOut'||c.id==='rd-bIn'){send('event/view/'+lang+'/'+c.id.slice(3),'View: '+c.id.slice(3));return;}
+ var h=c.getAttribute('href')||'';
+ if(h==='/id/'||h==='/'){send('event/lang-switch/'+lang+'-to-'+(h==='/'?'en':'id'),'Language switch');return;}
+ if(/\.(csv|json|xlsx|pdf|zip)(\?|$)/i.test(h)&&!/^https?:/i.test(h)){send('event/download/'+h.split('/').pop(),'Download: '+h);return;}
+ if(/^https?:/i.test(h)&&c.host!==location.host){send('event/out/'+c.host,'Outbound: '+c.host);}
+},true);
+})();</script>
 </body></html>
